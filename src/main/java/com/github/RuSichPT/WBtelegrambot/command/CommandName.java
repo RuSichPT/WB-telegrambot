@@ -9,7 +9,8 @@ public enum CommandName {
     HELP("/help"),
     STAT("/stat"),
     NO(""),
-    GET_PRICE_INFO("/getpriceinfo");
+    GET_PRICE("/getpriceinfo"),
+    SET_PRICE("/setprice");
 
     private final String commandName;
 
