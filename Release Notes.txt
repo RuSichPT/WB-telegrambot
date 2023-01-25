@@ -1,0 +1,17 @@
+# Release Notes
+
+## 0.1.0-SNAPSHOT
+
+* - implemented /setprice command
+* - added tests for /getpriceinfo, /setprice commands
+* - implemented post method for wbclient price
+
+## 0.0.2-SNAPSHOT
+
+* - added telegram bot. Added /start, /stop, /help, /getpriceinfo commands
+* - added wbclient price. Implemented get method.
+* - added CI on github
+
+## 0.0.1-SNAPSHOT
+
+* - added SpringBoot skeleton project

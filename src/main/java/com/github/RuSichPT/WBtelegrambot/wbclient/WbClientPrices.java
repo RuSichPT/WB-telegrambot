@@ -1,9 +1,14 @@
 package com.github.RuSichPT.WBtelegrambot.wbclient;
 
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfo;
+import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoSet;
+import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
 
 import java.util.List;
 
 public interface WbClientPrices {
-    List<PriceInfo> getPriceInfo(Integer quantity);
+    List<PriceInfoGet> getPriceInfo(Integer quantity);
+
+    HttpResponse<JsonNode> setPriceInfo(PriceInfoSet price);
 }

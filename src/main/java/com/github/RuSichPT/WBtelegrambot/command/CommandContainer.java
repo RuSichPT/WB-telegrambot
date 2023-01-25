@@ -21,7 +21,8 @@ public class CommandContainer {
                 .put(STOP.getCommandName(), new StopCommand(sendBotMessageService))
                 .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
-                .put(GET_PRICE_INFO.getCommandName(), new GetPriceCommand(sendBotMessageService, wbClientPrices))
+                .put(GET_PRICE.getCommandName(), new GetPriceCommand(sendBotMessageService, wbClientPrices))
+                .put(SET_PRICE.getCommandName(), new SetPriceCommand(sendBotMessageService, wbClientPrices))
                 .build();
 
         unknownCommand = new UnknownCommand(sendBotMessageService);
