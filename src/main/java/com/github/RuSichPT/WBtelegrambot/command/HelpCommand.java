@@ -8,7 +8,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.CommandName.*;
 /**
  * Help {@link Command}.
  */
-public class HelpCommand implements Command{
+public class HelpCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;
 
@@ -19,11 +19,12 @@ public class HelpCommand implements Command{
                     + "%s - приостановить работу со мной\n\n"
 
                     + "%s - получить  информацию по номенклатурам, их ценам, скидкам и промокодам.\n"
-                    + "%s - изменить цену товара.\n\n"
+                    + "%s - изменить цену товара.\n"
+                    + "%s - изменить скидку товара.\n\n"
 
                     + "%s - получить помощь в работе со мной\n",
             START.getCommandName(), STOP.getCommandName(),
-            GET_PRICE.getCommandName(), SET_PRICE.getCommandName(),
+            GET_PRICE.getCommandName(), SET_PRICE.getCommandName(), SET_DISCOUNT.getCommandName(),
             HELP.getCommandName());
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {

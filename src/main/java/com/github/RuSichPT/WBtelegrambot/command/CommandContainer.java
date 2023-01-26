@@ -14,7 +14,7 @@ public class CommandContainer {
     private final ImmutableMap<String, Command> commandMap;
     private final Command unknownCommand;
 
-    public CommandContainer(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices)  {
+    public CommandContainer(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices) {
 
         commandMap = ImmutableMap.<String, Command>builder()
                 .put(START.getCommandName(), new StartCommand(sendBotMessageService))
@@ -23,6 +23,7 @@ public class CommandContainer {
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
                 .put(GET_PRICE.getCommandName(), new GetPriceCommand(sendBotMessageService, wbClientPrices))
                 .put(SET_PRICE.getCommandName(), new SetPriceCommand(sendBotMessageService, wbClientPrices))
+                .put(SET_DISCOUNT.getCommandName(), new SetDiscountCommand(sendBotMessageService, wbClientPrices))
                 .build();
 
         unknownCommand = new UnknownCommand(sendBotMessageService);
@@ -30,5 +31,9 @@ public class CommandContainer {
 
     public Command findCommand(String commandIdentifier) {
         return commandMap.getOrDefault(commandIdentifier, unknownCommand);
+    }
+
+    public int size() {
+        return commandMap.size();
     }
 }

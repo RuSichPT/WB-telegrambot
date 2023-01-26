@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import static com.github.RuSichPT.WBtelegrambot.command.CommandName.NO;
 
 @Component
-public class WbTelegramBot extends TelegramLongPollingBot{
+public class WbTelegramBot extends TelegramLongPollingBot {
 
     public static String COMMAND_PREFIX = "/";
 
@@ -32,13 +32,11 @@ public class WbTelegramBot extends TelegramLongPollingBot{
     @Override
     public void onUpdateReceived(Update update) {
 
-        if (update.hasMessage() && update.getMessage().hasText())
-        {
+        if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText().trim();
 
             String commandName;
-            if (message.startsWith(COMMAND_PREFIX))
-            {
+            if (message.startsWith(COMMAND_PREFIX)) {
                 commandName = message.split(" ")[0].toLowerCase();
             } else {
                 commandName = NO.getCommandName();

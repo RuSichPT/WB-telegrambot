@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.0-SNAPSHOT
+* - implemented /setdiscount command. And added tests for it
+* - implemented post method for wbclient discount
+
 ## 0.1.0-SNAPSHOT
 
 * - implemented /setprice command

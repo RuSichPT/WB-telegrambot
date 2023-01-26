@@ -13,9 +13,8 @@ public class PriceInfoSet {
         this.price = price;
     }
 
-    public JsonNode getJsonNode()
-    {
-        String str = String.format("{\"nmId\":%s,\"price\": %s}",this.getNmId(),this.getPrice());
+    public JsonNode getJsonNode() {
+        String str = String.format("{\"nmId\":%s,\"price\": %s}", this.getNmId(), this.getPrice());
         return new JsonNode(str);
     }
 }
