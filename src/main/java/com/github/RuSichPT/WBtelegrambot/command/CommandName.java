@@ -7,10 +7,10 @@ public enum CommandName {
     START("/start"),
     STOP("/stop"),
     HELP("/help"),
-    STAT("/stat"),
     NO(""),
     GET_PRICE("/getpriceinfo"),
-    SET_PRICE("/setprice");
+    SET_PRICE("/setprice"),
+    SET_DISCOUNT("/setdiscount");
 
     private final String commandName;
 

@@ -15,9 +15,18 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class SetPriceCommand implements Command {
 
-    private final WbClientPrices wbClientPrices;
     private final SendBotMessageService sendBotMessageService;
-    private final int COMMAND_LENGTH = 4;
+    private final WbClientPrices wbClientPrices;
+
+    public static final String SET_PRICE_MESSAGE1 = "Чтобы поменять цену товара введите данные в виде: \n"
+            + CommandName.SET_PRICE.getCommandName()
+            + " номенклатура = цена\n\n"
+            + "Пример:\n"
+            + CommandName.SET_PRICE.getCommandName() + " 123456789 = 10256\n\n"
+            + "Текущие цены на товары: \n";
+
+    public static final String SET_PRICE_MESSAGE2 = "Цена товара %s успешно изменена на %s";
+    public static final String SET_PRICE_MESSAGE3 = "Не удалось изменить цену!";
 
     public SetPriceCommand(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices) {
         this.sendBotMessageService = sendBotMessageService;
@@ -28,35 +37,27 @@ public class SetPriceCommand implements Command {
     public void execute(Update update) {
         String command = update.getMessage().getText();
         String[] comStrings = command.split(SPACE);
-        String message = "Не удалось изменить цену!";
+        String message = SET_PRICE_MESSAGE3;
 
-        if (command.equalsIgnoreCase(CommandName.SET_PRICE.getCommandName()))
-        {
-            String str = "Чтобы поменять цену товара введите данные в виде: \n"
-                    + CommandName.SET_PRICE.getCommandName()
-                    + " номенклатура = цена.\n"
-                    + "Доступные номенклатуры: \n";
-            message = str + wbClientPrices.getPriceInfo(0).stream()
-                    .map(p->(String.format("%s\n",p.getNmId())))
+        int COMMAND_LENGTH = 4;
+
+        if (command.equalsIgnoreCase(CommandName.SET_PRICE.getCommandName())) {
+            message = SET_PRICE_MESSAGE1 + wbClientPrices.getPriceInfo(0).stream()
+                    .map(p -> (String.format("%s = %s\n", p.getNmId(), p.getPrice())))
                     .collect(Collectors.joining());
-        }
-        else if (comStrings.length == COMMAND_LENGTH)
-        {
-            if (comStrings[0].equalsIgnoreCase(CommandName.SET_PRICE.getCommandName()))
-            {
-                if (comStrings[2].equalsIgnoreCase("=") && isNumeric(comStrings[3]))
-                {
-                    PriceInfoSet price = new PriceInfoSet(Integer.valueOf(comStrings[1]), Integer.valueOf(comStrings[3]));
+        } else if (comStrings.length == COMMAND_LENGTH) {
+            if (comStrings[0].equalsIgnoreCase(CommandName.SET_PRICE.getCommandName())) {
+                if (comStrings[2].equalsIgnoreCase("=") && isNumeric(comStrings[3])) {
+                    PriceInfoSet price = new PriceInfoSet(Integer.parseInt(comStrings[1]), Integer.parseInt(comStrings[3]));
                     HttpResponse<JsonNode> httpResponse = wbClientPrices.setPriceInfo(price);
 
-                    if (httpResponse.getStatus() == HttpStatus.OK)
-                    {
-                        message = String.format("Цена товара %s успешно изменена на %s", price.getNmId(),price.getPrice());
+                    if (httpResponse.getStatus() == HttpStatus.OK) {
+                        message = String.format(SET_PRICE_MESSAGE2, price.getNmId(), price.getPrice());
                     }
                 }
             }
         }
 
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(),message);
+        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
     }
 }

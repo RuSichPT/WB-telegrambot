@@ -13,7 +13,7 @@ public class SendBotMessageServiceTest {
     private WbTelegramBot wbTelegramBot;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         wbTelegramBot = Mockito.mock(WbTelegramBot.class);
         sendBotMessageService = new SendBotMessageServiceImpl(wbTelegramBot);
     }

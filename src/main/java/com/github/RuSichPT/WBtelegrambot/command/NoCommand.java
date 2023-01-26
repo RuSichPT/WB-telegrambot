@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 /**
  * No {@link Command}.
  */
-public class NoCommand implements Command{
+public class NoCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;
 

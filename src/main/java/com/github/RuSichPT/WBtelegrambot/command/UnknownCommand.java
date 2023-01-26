@@ -3,7 +3,7 @@ package com.github.RuSichPT.WBtelegrambot.command;
 import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class UnknownCommand implements Command{
+public class UnknownCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;
 
