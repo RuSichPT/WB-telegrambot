@@ -3,6 +3,7 @@ package com.github.RuSichPT.WBtelegrambot.command;
 import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
+import kong.unirest.HttpResponse;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class GetPriceCommand implements Command {
             if (isNumeric(comStrings[1])) {
                 int quantity = Integer.parseInt(comStrings[1]);
 
-                List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity);
+                List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity).getBody();
 
                 message = priceInfoList.stream()
                         .map(pI -> (String.format(GET_PRICE_COMMAND2, pI.getNmId(), pI.getPrice(), pI.getDiscount(), pI.getPromoCode())))

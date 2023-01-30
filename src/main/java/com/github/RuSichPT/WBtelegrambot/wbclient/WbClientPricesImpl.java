@@ -1,8 +1,6 @@
 package com.github.RuSichPT.WBtelegrambot.wbclient;
 
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Discount;
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoSet;
+import com.github.RuSichPT.WBtelegrambot.wbclient.dto.*;
 import kong.unirest.GenericType;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -16,21 +14,22 @@ import java.util.List;
 @Component
 public class WbClientPricesImpl implements WbClientPrices {
 
-    private final String apiPath;
+    private final String apiPathPublic;
+    private final String apiPathOrders;
 
     private final HashMap<String, String> headersMap;
 
     public WbClientPricesImpl(@Value("${wb.api.path}") String apiPath, @Value("${wb.standart.token}") String token) {
-        this.apiPath = apiPath + "/public/api/v1/";
+        this.apiPathPublic = apiPath + "/public/api/v1";
+        this.apiPathOrders = apiPath + "/api/v3/orders";
         this.headersMap = new HashMap<>();
         this.headersMap.put("accept", "application/json");
         this.headersMap.put("Authorization", token);
     }
 
     @Override
-    public List<PriceInfoGet> getPriceInfo(Integer quantity) {
-        String path = apiPath + "/info";
-
+    public HttpResponse<List<PriceInfoGet>> getPriceInfo(Integer quantity) {
+        String path = apiPathPublic + "/info";
         headersMap.put("accept", "application/json");
 
         HashMap<String, Object> queryMap = new HashMap<>();
@@ -39,16 +38,36 @@ public class WbClientPricesImpl implements WbClientPrices {
         return Unirest.get(path)
                 .headers(headersMap)
                 .queryString(queryMap)
-                .asObject(new GenericType<List<PriceInfoGet>>() {
-                })
-                .getBody();
+                .asObject(new GenericType<>() {
+                });
 
     }
 
     @Override
-    public HttpResponse<JsonNode> setPriceInfo(PriceInfoSet priceInfoSet) {
-        String path = apiPath + "/prices";
+    public HttpResponse<Orders> getNewOrders() {
+        String path = apiPathOrders + "/new";
+        headersMap.put("accept", "application/json");
 
+        return Unirest.get(path)
+                .headers(headersMap)
+                .asObject(new GenericType<>() {
+                });
+    }
+
+    @Override
+    public HttpResponse<Orders> getOrders(OrderRequestArgs requestArgs) {
+        headersMap.put("accept", "application/json");
+
+        return Unirest.get(apiPathOrders)
+                .headers(headersMap)
+                .queryString(requestArgs.populateQueries())
+                .asObject(new GenericType<>() {
+                });
+    }
+
+    @Override
+    public HttpResponse<JsonNode> setPriceInfo(PriceInfoSet priceInfoSet) {
+        String path = apiPathPublic + "/prices";
         headersMap.put("accept", "/");
         headersMap.put("Content-Type", "application/json");
 
@@ -61,8 +80,7 @@ public class WbClientPricesImpl implements WbClientPrices {
 
     @Override
     public HttpResponse<JsonNode> setDiscount(Discount discount) {
-        String path = apiPath + "/updateDiscounts";
-
+        String path = apiPathPublic + "/updateDiscounts";
         headersMap.put("accept", "text/plain");
         headersMap.put("Content-Type", "application/json");
 

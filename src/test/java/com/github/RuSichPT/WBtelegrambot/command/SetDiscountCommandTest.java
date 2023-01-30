@@ -1,7 +1,6 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Discount;
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
 import kong.unirest.HttpResponse;
 import kong.unirest.HttpStatus;
 import kong.unirest.JsonNode;
@@ -9,19 +8,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
-
 public class SetDiscountCommandTest extends AbstractPriceCommandTest {
     private final SetDiscountCommand setDiscountCommand = new SetDiscountCommand(sendBotMessageService, wbClientPrices);
 
-    private PriceInfoGet priceInfoGet;
     private Discount discount;
 
     @BeforeEach
     public void init() {
-        priceInfoGet = new PriceInfoGet();
-        priceInfoGet.setNmId(125468);
-        Mockito.when(wbClientPrices.getPriceInfo(0)).thenReturn(Collections.singletonList(priceInfoGet));
+        Mockito.when(httpResponse.getStatus()).thenReturn(HttpStatus.OK);
+        Mockito.when(httpResponse.getBody()).thenReturn(priceInfoGetList);
+        Mockito.when(wbClientPrices.getPriceInfo(0)).thenReturn(httpResponse);
 
         discount = new Discount(12345678, 15);
         HttpResponse<JsonNode> httpResponse = Mockito.mock(HttpResponse.class);
@@ -34,7 +30,7 @@ public class SetDiscountCommandTest extends AbstractPriceCommandTest {
         //given
         String command = "/setdiscount";
         String answer = SetDiscountCommand.SET_DISCOUNT_MESSAGE1
-                + String.format("%s = %s%%\n", priceInfoGet.getNmId(), priceInfoGet.getDiscount());
+                + String.format("%s = %s%%\n", priceInfoGetList.get(0).getNmId(), priceInfoGetList.get(0).getDiscount());
 
         executeAndVerify(command, answer);
     }

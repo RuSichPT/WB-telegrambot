@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Collections;
+import java.util.List;
 
 public class SetPriceCommandTest extends AbstractPriceCommandTest {
 
@@ -21,7 +22,10 @@ public class SetPriceCommandTest extends AbstractPriceCommandTest {
     public void init() {
         priceInfoGet = new PriceInfoGet();
         priceInfoGet.setNmId(125468);
-        Mockito.when(wbClientPrices.getPriceInfo(0)).thenReturn(Collections.singletonList(priceInfoGet));
+        HttpResponse<List<PriceInfoGet>> listHttpResponse = Mockito.mock(HttpResponse.class);
+        Mockito.when(listHttpResponse.getStatus()).thenReturn(HttpStatus.OK);
+        Mockito.when(listHttpResponse.getBody()).thenReturn(Collections.singletonList(priceInfoGet));
+        Mockito.when(wbClientPrices.getPriceInfo(0)).thenReturn(listHttpResponse);
 
         priceInfoSet = new PriceInfoSet(12345678, 10569);
         HttpResponse<JsonNode> httpResponse = Mockito.mock(HttpResponse.class);

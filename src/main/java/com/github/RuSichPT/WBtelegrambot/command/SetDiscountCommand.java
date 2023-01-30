@@ -41,7 +41,7 @@ public class SetDiscountCommand implements Command {
         int COMMAND_LENGTH = 4;
 
         if (command.equalsIgnoreCase(CommandName.SET_DISCOUNT.getCommandName())) {
-            message = SET_DISCOUNT_MESSAGE1 + wbClientPrices.getPriceInfo(0).stream()
+            message = SET_DISCOUNT_MESSAGE1 + wbClientPrices.getPriceInfo(0).getBody().stream()
                     .map(p -> (String.format("%s = %s%%\n", p.getNmId(), p.getDiscount())))
                     .collect(Collectors.joining());
         } else if (comStrings.length == COMMAND_LENGTH) {

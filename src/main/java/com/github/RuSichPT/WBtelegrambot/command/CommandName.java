@@ -10,7 +10,8 @@ public enum CommandName {
     NO(""),
     GET_PRICE("/getpriceinfo"),
     SET_PRICE("/setprice"),
-    SET_DISCOUNT("/setdiscount");
+    SET_DISCOUNT("/setdiscount"),
+    GET_NUM_ORDERS("/getnumorders");
 
     private final String commandName;
 
