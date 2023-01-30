@@ -1,8 +1,6 @@
 package com.github.RuSichPT.WBtelegrambot.wbclient;
 
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Discount;
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoSet;
+import com.github.RuSichPT.WBtelegrambot.wbclient.dto.*;
 import kong.unirest.HttpResponse;
 import kong.unirest.HttpStatus;
 import kong.unirest.JsonNode;
@@ -32,10 +30,42 @@ public class WbClientPricesTest {
         Integer quantity = 0;
 
         //when
-        List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity);
+        HttpResponse<List<PriceInfoGet>> httpResponse = wbClientPrices.getPriceInfo(quantity);
+        List<PriceInfoGet> priceInfoList = httpResponse.getBody();
 
         //then
+        Assertions.assertEquals(HttpStatus.OK, httpResponse.getStatus());
         Assertions.assertNotNull(priceInfoList);
+    }
+
+    @Test
+    public void shouldCorrectlyGetNewOrders() {
+        //given
+
+        //when
+        HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders();
+        Orders orders = httpResponse.getBody();
+
+        //then
+        Assertions.assertEquals(HttpStatus.OK, httpResponse.getStatus());
+        Assertions.assertNotNull(orders);
+    }
+
+    @Test
+    public void shouldCorrectlyGetOrders() {
+        //given
+        OrderRequestArgs requestArgs = OrderRequestArgs.builder()
+                .limit(10)
+                .next(0L)
+                .build();
+
+        //when
+        HttpResponse<Orders> httpResponse = wbClientPrices.getOrders(requestArgs);
+        Orders orders = httpResponse.getBody();
+
+        //then
+        Assertions.assertEquals(HttpStatus.OK, httpResponse.getStatus());
+        Assertions.assertNotNull(orders);
     }
 
     @Test

@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.3.0-SNAPSHOT
+* - implemented /getnumorders command. And added tests for it
+* - implemented get method for wbclient order
+* - refactored some code
+
 ## 0.2.0-SNAPSHOT
 * - implemented /setdiscount command. And added tests for it
 * - implemented post method for wbclient discount

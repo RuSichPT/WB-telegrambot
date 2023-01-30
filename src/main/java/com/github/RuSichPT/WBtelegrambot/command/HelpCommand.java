@@ -22,9 +22,12 @@ public class HelpCommand implements Command {
                     + "%s - изменить цену товара.\n"
                     + "%s - изменить скидку товара.\n\n"
 
+                    + "%s - получить общее число заказов.\n\n"
+
                     + "%s - получить помощь в работе со мной\n",
             START.getCommandName(), STOP.getCommandName(),
             GET_PRICE.getCommandName(), SET_PRICE.getCommandName(), SET_DISCOUNT.getCommandName(),
+            GET_NUM_ORDERS.getCommandName(),
             HELP.getCommandName());
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {

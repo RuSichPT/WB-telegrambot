@@ -42,7 +42,7 @@ public class SetPriceCommand implements Command {
         int COMMAND_LENGTH = 4;
 
         if (command.equalsIgnoreCase(CommandName.SET_PRICE.getCommandName())) {
-            message = SET_PRICE_MESSAGE1 + wbClientPrices.getPriceInfo(0).stream()
+            message = SET_PRICE_MESSAGE1 + wbClientPrices.getPriceInfo(0).getBody().stream()
                     .map(p -> (String.format("%s = %s\n", p.getNmId(), p.getPrice())))
                     .collect(Collectors.joining());
         } else if (comStrings.length == COMMAND_LENGTH) {
