@@ -1,5 +1,12 @@
 # Release Notes
 
+## 0.4.0-SNAPSHOT
+* - implemented notification about new orders.
+* - implemented /getneworders command.
+* - added repository and service for MySql data base. Add tg_user table. Added Flyway.
+* - added job and service for notification.
+* - changed /start and /stop commands.
+
 ## 0.3.0-SNAPSHOT
 * - implemented /getnumorders command. And added tests for it
 * - implemented get method for wbclient order
