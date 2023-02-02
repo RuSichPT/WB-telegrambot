@@ -2,6 +2,7 @@ package com.github.RuSichPT.WBtelegrambot.bot;
 
 import com.github.RuSichPT.WBtelegrambot.command.CommandContainer;
 import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageServiceImpl;
+import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +26,8 @@ public class WbTelegramBot extends TelegramLongPollingBot {
     private String token;
 
     @Autowired
-    public WbTelegramBot(WbClientPrices wbClientPrices) {
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), wbClientPrices);
+    public WbTelegramBot(WbClientPrices wbClientPrices, TelegramUserService telegramUserService) {
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), wbClientPrices, telegramUserService);
     }
 
     @Override

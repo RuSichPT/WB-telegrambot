@@ -1,6 +1,7 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.google.common.collect.ImmutableMap;
 
@@ -14,17 +15,18 @@ public class CommandContainer {
     private final ImmutableMap<String, Command> commandMap;
     private final Command unknownCommand;
 
-    public CommandContainer(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices) {
+    public CommandContainer(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices, TelegramUserService telegramUserService) {
 
         commandMap = ImmutableMap.<String, Command>builder()
-                .put(START.getCommandName(), new StartCommand(sendBotMessageService))
-                .put(STOP.getCommandName(), new StopCommand(sendBotMessageService))
+                .put(START.getCommandName(), new StartCommand(sendBotMessageService, telegramUserService))
+                .put(STOP.getCommandName(), new StopCommand(sendBotMessageService, telegramUserService))
                 .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
                 .put(GET_PRICE.getCommandName(), new GetPriceCommand(sendBotMessageService, wbClientPrices))
                 .put(SET_PRICE.getCommandName(), new SetPriceCommand(sendBotMessageService, wbClientPrices))
                 .put(SET_DISCOUNT.getCommandName(), new SetDiscountCommand(sendBotMessageService, wbClientPrices))
                 .put(GET_NUM_ORDERS.getCommandName(), new GetNumOrdersCommand(sendBotMessageService, wbClientPrices))
+                .put(GET_NEW_ORDERS.getCommandName(), new GetNewOrdersCommand(sendBotMessageService, wbClientPrices))
                 .build();
 
         unknownCommand = new UnknownCommand(sendBotMessageService);

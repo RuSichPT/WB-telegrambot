@@ -18,16 +18,19 @@ public class HelpCommand implements Command {
                     + "%s - начать работу со мной\n"
                     + "%s - приостановить работу со мной\n\n"
 
+                    + "<b>Работа с товарами</b>\n"
                     + "%s - получить  информацию по номенклатурам, их ценам, скидкам и промокодам.\n"
                     + "%s - изменить цену товара.\n"
                     + "%s - изменить скидку товара.\n\n"
 
-                    + "%s - получить общее число заказов.\n\n"
+                    + "<b>Работа с заказами</b>\n"
+                    + "%s - получить общее число заказов.\n"
+                    + "%s - получить число новых заказов.\n\n"
 
                     + "%s - получить помощь в работе со мной\n",
             START.getCommandName(), STOP.getCommandName(),
             GET_PRICE.getCommandName(), SET_PRICE.getCommandName(), SET_DISCOUNT.getCommandName(),
-            GET_NUM_ORDERS.getCommandName(),
+            GET_NUM_ORDERS.getCommandName(), GET_NEW_ORDERS.getCommandName(),
             HELP.getCommandName());
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {
