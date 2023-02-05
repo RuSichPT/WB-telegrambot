@@ -24,7 +24,7 @@ public class TelegramUser {
     private String userName;
 
     @Column(name = "numNewOrders")
-    private Integer numNewOrders;
+    private Integer numNewOrders = 0;
 
     public TelegramUser() {
     }

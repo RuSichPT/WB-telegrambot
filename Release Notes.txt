@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.4.1-SNAPSHOT
+* - fix bug in job
+
 ## 0.4.0-SNAPSHOT
 * - implemented notification about new orders.
 * - implemented /getneworders command.
