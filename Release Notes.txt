@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.4.2-SNAPSHOT
+* - fix bug in job 2; NumNewOrders were not resetting
+
 ## 0.4.1-SNAPSHOT
 * - fix bug in job
 
