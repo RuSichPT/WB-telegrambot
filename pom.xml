@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.github.RuSichPT</groupId>
 	<artifactId>WB-telegrambot</artifactId>
-	<version>0.4.1-SNAPSHOT</version>
+	<version>0.4.2-SNAPSHOT</version>
 	<name>WB-telegrambot</name>
 	<description>Telegram bot for work with Wildberries</description>
 	<properties>

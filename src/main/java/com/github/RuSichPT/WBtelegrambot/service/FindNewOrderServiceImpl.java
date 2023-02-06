@@ -25,17 +25,16 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
     public void findNewOrders() {
 
         int numNewOrders = wbClientPrices.getNewOrders().getBody().getOrders().size();
+        List<TelegramUser> telegramUsers = telegramUserService.findAll();
 
-        if (numNewOrders != 0){
+        for (TelegramUser tu :
+                telegramUsers) {
+            if (tu.getNumNewOrders() != numNewOrders) {
 
-            List<TelegramUser> telegramUsers = telegramUserService.findAll();
+                tu.setNumNewOrders(numNewOrders);
+                telegramUserService.saveUser(tu);
 
-            for (var tu:
-                    telegramUsers) {
-                if (tu.getNumNewOrders() != numNewOrders){
-                    tu.setNumNewOrders(numNewOrders);
-                    telegramUserService.saveUser(tu);
-
+                if (numNewOrders != 0) {
                     sendBotMessageService.sendMessage(tu.getChatId(), MESSAGE);
                 }
             }
