@@ -1,58 +1,43 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Order;
-import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
-import kong.unirest.HttpResponse;
 import kong.unirest.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
+import static com.github.RuSichPT.WBtelegrambot.command.CommandName.GET_NEW_ORDERS;
+import static com.github.RuSichPT.WBtelegrambot.command.GetAllOrdersCommand.MESSAGE2;
+import static com.github.RuSichPT.WBtelegrambot.command.GetNewOrdersCommand.MESSAGE1;
 
-import static com.github.RuSichPT.WBtelegrambot.command.GetNewOrdersCommand.GET_NUM_ORDERS_COMMAND1;
-import static com.github.RuSichPT.WBtelegrambot.command.GetNumOrdersCommand.GET_NUM_ORDERS_COMMAND2;
+public class GetNewOrdersCommandTest extends AbstractWbClientCommandTest {
 
-public class GetNewOrdersCommandTest extends AbstractPriceCommandTest {
-
-    private final GetNewOrdersCommand getNewOrdersCommand = new GetNewOrdersCommand(sendBotMessageService, wbClientPrices);
-
-    private final HttpResponse<Orders> httpResponse = Mockito.mock(HttpResponse.class);
-    private final Orders orders = Mockito.mock(Orders.class);
-    private final List<Order> ordersList = Mockito.mock(List.class);
+    private final GetNewOrdersCommand getNewOrdersCommand = new GetNewOrdersCommand(sendBotMessageService, telegramUserService, wbClientPrices);
 
     @BeforeEach
     public void init() {
-        Mockito.when(httpResponse.getBody()).thenReturn(orders);
-        Mockito.when(orders.getOrders()).thenReturn(ordersList);
-        Mockito.when(ordersList.size()).thenReturn(15);
-        Mockito.when(wbClientPrices.getNewOrders()).thenReturn(httpResponse);
+        initHttpResponseOrders(15);
+
+        Mockito.when(wbClientPrices.getNewOrders(Mockito.any(String.class))).thenReturn(httpResponseOrders);
+
+        initTelegramUserService();
     }
 
     @Test
-    public void shouldCorrectlyExecuteCommand1(){
+    public void shouldCorrectlySendMessage1() {
         //given
-        Mockito.when(httpResponse.getStatus()).thenReturn(HttpStatus.OK);
-        String command = "/getneworders";
-        String answer = String.format(GET_NUM_ORDERS_COMMAND1, ordersList.size());
+        Mockito.when(httpResponseOrders.getStatus()).thenReturn(HttpStatus.OK);
+        String command = GET_NEW_ORDERS.getCommandName();
+        String answer = String.format(MESSAGE1, ordersList.size());
 
-        //while
-        getNewOrdersCommand.execute(getUpdate(command));
-
-        //then
-        Mockito.verify(sendBotMessageService).sendMessage(chatId, answer);
+        executeAndVerify(getNewOrdersCommand, command, answer);
     }
 
     @Test
-    public void shouldCorrectlyExecuteCommand2(){
+    public void shouldCorrectlySendMessage2() {
         //given
-        Mockito.when(httpResponse.getStatus()).thenReturn(HttpStatus.BAD_REQUEST);
-        String command = "/getneworders";
+        Mockito.when(httpResponseOrders.getStatus()).thenReturn(HttpStatus.BAD_REQUEST);
+        String command = GET_NEW_ORDERS.getCommandName();
 
-        //while
-        getNewOrdersCommand.execute(getUpdate(command));
-
-        //then
-        Mockito.verify(sendBotMessageService).sendMessage(chatId, GET_NUM_ORDERS_COMMAND2);
+        executeAndVerify(getNewOrdersCommand, command, MESSAGE2);
     }
 }

@@ -19,17 +19,16 @@ public class WbClientPricesImpl implements WbClientPrices {
 
     private final HashMap<String, String> headersMap;
 
-    public WbClientPricesImpl(@Value("${wb.api.path}") String apiPath, @Value("${wb.standart.token}") String token) {
-        this.apiPathPublic = apiPath + "/public/api/v1";
-        this.apiPathOrders = apiPath + "/api/v3/orders";
-        this.headersMap = new HashMap<>();
-        this.headersMap.put("accept", "application/json");
-        this.headersMap.put("Authorization", token);
+    public WbClientPricesImpl(@Value("${wb.api.path}") String apiPath) {
+        apiPathPublic = apiPath + "/public/api/v1";
+        apiPathOrders = apiPath + "/api/v3/orders";
+        headersMap = new HashMap<>();
     }
 
     @Override
-    public HttpResponse<List<PriceInfoGet>> getPriceInfo(Integer quantity) {
+    public HttpResponse<List<PriceInfoGet>> getPriceInfo(Integer quantity, String wbToken) {
         String path = apiPathPublic + "/info";
+        headersMap.put("Authorization", wbToken);
         headersMap.put("accept", "application/json");
 
         HashMap<String, Object> queryMap = new HashMap<>();
@@ -44,8 +43,9 @@ public class WbClientPricesImpl implements WbClientPrices {
     }
 
     @Override
-    public HttpResponse<Orders> getNewOrders() {
+    public HttpResponse<Orders> getNewOrders(String wbToken) {
         String path = apiPathOrders + "/new";
+        headersMap.put("Authorization", wbToken);
         headersMap.put("accept", "application/json");
 
         return Unirest.get(path)
@@ -55,7 +55,8 @@ public class WbClientPricesImpl implements WbClientPrices {
     }
 
     @Override
-    public HttpResponse<Orders> getOrders(OrderRequestArgs requestArgs) {
+    public HttpResponse<Orders> getOrders(OrderRequestArgs requestArgs, String wbToken) {
+        headersMap.put("Authorization", wbToken);
         headersMap.put("accept", "application/json");
 
         return Unirest.get(apiPathOrders)
@@ -66,8 +67,9 @@ public class WbClientPricesImpl implements WbClientPrices {
     }
 
     @Override
-    public HttpResponse<JsonNode> setPriceInfo(PriceInfoSet priceInfoSet) {
+    public HttpResponse<JsonNode> setPriceInfo(PriceInfoSet priceInfoSet, String wbToken) {
         String path = apiPathPublic + "/prices";
+        headersMap.put("Authorization", wbToken);
         headersMap.put("accept", "/");
         headersMap.put("Content-Type", "application/json");
 
@@ -79,8 +81,9 @@ public class WbClientPricesImpl implements WbClientPrices {
     }
 
     @Override
-    public HttpResponse<JsonNode> setDiscount(Discount discount) {
+    public HttpResponse<JsonNode> setDiscount(Discount discount, String wbToken) {
         String path = apiPathPublic + "/updateDiscounts";
+        headersMap.put("Authorization", wbToken);
         headersMap.put("accept", "text/plain");
         headersMap.put("Content-Type", "application/json");
 

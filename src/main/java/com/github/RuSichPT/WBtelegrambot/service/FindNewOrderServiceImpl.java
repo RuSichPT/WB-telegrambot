@@ -2,6 +2,9 @@ package com.github.RuSichPT.WBtelegrambot.service;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
+import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
+import kong.unirest.HttpResponse;
+import kong.unirest.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,18 +27,25 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
     @Override
     public void findNewOrders() {
 
-        int numNewOrders = wbClientPrices.getNewOrders().getBody().getOrders().size();
         List<TelegramUser> telegramUsers = telegramUserService.findAll();
 
         for (TelegramUser tu :
                 telegramUsers) {
-            if (tu.getNumNewOrders() != numNewOrders) {
 
-                tu.setNumNewOrders(numNewOrders);
-                telegramUserService.saveUser(tu);
+            HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders(tu.getWbToken());
 
-                if (numNewOrders != 0) {
-                    sendBotMessageService.sendMessage(tu.getChatId(), MESSAGE);
+            if (httpResponse.getStatus() == HttpStatus.OK) {
+
+                int numNewOrders = httpResponse.getBody().getOrders().size();
+
+                if (tu.getNumNewOrders() != numNewOrders) {
+
+                    tu.setNumNewOrders(numNewOrders);
+                    telegramUserService.saveUser(tu);
+
+                    if (numNewOrders != 0) {
+                        sendBotMessageService.sendMessage(tu.getChatId(), MESSAGE);
+                    }
                 }
             }
         }

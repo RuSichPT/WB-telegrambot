@@ -11,8 +11,9 @@ public enum CommandName {
     GET_PRICE("/getpriceinfo"),
     SET_PRICE("/setprice"),
     SET_DISCOUNT("/setdiscount"),
-    GET_NUM_ORDERS("/getnumorders"),
-    GET_NEW_ORDERS("/getneworders");
+    GET_ALL_ORDERS("/getallorders"),
+    GET_NEW_ORDERS("/getneworders"),
+    SET_WB_TOKEN("/setwbtoken");
 
     private final String commandName;
 

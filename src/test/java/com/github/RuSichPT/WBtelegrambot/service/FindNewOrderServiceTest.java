@@ -5,6 +5,7 @@ import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPricesImpl;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Order;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
 import kong.unirest.HttpResponse;
+import kong.unirest.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,6 +13,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.RuSichPT.WBtelegrambot.service.FindNewOrderServiceImpl.MESSAGE;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
@@ -26,20 +28,19 @@ public class FindNewOrderServiceTest {
     private final Orders orders = Mockito.mock(Orders.class);
     private final List<Order> orderList = Mockito.mock(List.class);
 
-    private final Long chatId = 12564L;
     private final int NUM_USERS = 3;
 
     @BeforeEach
     public void init() {
-        Mockito.when(wbClientPrices.getNewOrders()).thenReturn(httpResponse);
+        Mockito.when(wbClientPrices.getNewOrders(Mockito.any(String.class))).thenReturn(httpResponse);
         Mockito.when(httpResponse.getBody()).thenReturn(orders);
+        Mockito.when(httpResponse.getStatus()).thenReturn(HttpStatus.OK);
         Mockito.when(orders.getOrders()).thenReturn(orderList);
     }
 
     @Test
     public void shouldCorrectlyNotifyAllUsers() {
         //given
-        String message = FindNewOrderServiceImpl.MESSAGE;
         Mockito.when(orderList.size()).thenReturn(1);
         Mockito.when(telegramUserService.findAll()).thenReturn(createListTelegramUser(0));
 
@@ -47,7 +48,8 @@ public class FindNewOrderServiceTest {
         findNewOrderService.findNewOrders();
 
         //then
-        Mockito.verify(sendBotMessageService, times(NUM_USERS)).sendMessage(chatId, message);
+        Long chatId = 12564L;
+        Mockito.verify(sendBotMessageService, times(NUM_USERS)).sendMessage(chatId, MESSAGE);
     }
 
     @Test

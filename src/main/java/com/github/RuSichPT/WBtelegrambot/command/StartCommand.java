@@ -10,8 +10,12 @@ public class StartCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
     private final TelegramUserService telegramUserService;
 
-    public final static String START_MESSAGE = "Привет. Я Wildberries Telegram Bot. Теперь я буду уведомлять тебя о новых заказах."
-            + " Напиши /help чтобы узнать что я еще умею.";
+    public final static String START_MESSAGE = "Привет. <b>Я Wildberries Telegram Bot</b>.\n" +
+            "Я помогу тебе с управлением на Wildberries."
+            + " А также я умею уведомлять тебя о новых заказах. \n\n"
+            + "Чтобы <b>начать работу</b> со мной, пришли мне WB токен (стандартный), используя следующую команду:\n"
+            + CommandName.SET_WB_TOKEN.getCommandName() + " WB токен\n\n"
+            + "Напиши /help чтобы узнать что я еще умею.";
 
     public StartCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
         this.sendBotMessageService = sendBotMessageService;

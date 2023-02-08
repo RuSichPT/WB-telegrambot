@@ -19,7 +19,7 @@ public class TelegramUserRepositoryIntTest {
     @Autowired
     private TelegramUserRepository telegramUserRepository;
 
-    @Sql(scripts = {"/sql/delete_tg_user.sql","/sql/insert_5_tg_users.sql"})
+    @Sql(scripts = {"/sql/delete_tg_user.sql", "/sql/insert_5_tg_users.sql"})
     @Test
     public void shouldCorrectlyFindByIdTelegramUser() {
         //given
@@ -32,7 +32,7 @@ public class TelegramUserRepositoryIntTest {
         Assertions.assertEquals(newUser, user);
     }
 
-    @Sql(scripts = {"/sql/delete_tg_user.sql","/sql/insert_5_tg_users.sql"})
+    @Sql(scripts = {"/sql/delete_tg_user.sql", "/sql/insert_5_tg_users.sql"})
     @Test
     public void shouldCorrectlyFindAllTelegramUser() {
         //given
@@ -46,7 +46,7 @@ public class TelegramUserRepositoryIntTest {
 
     @Sql(scripts = {"/sql/delete_tg_user.sql"})
     @Test
-    public void shouldCorrectlySaveTelegramUser(){
+    public void shouldCorrectlySaveTelegramUser() {
         //given
         TelegramUser newUser = new TelegramUser(54123L, "test");
 
@@ -58,9 +58,9 @@ public class TelegramUserRepositoryIntTest {
         Assertions.assertEquals(newUser, user);
     }
 
-    @Sql(scripts = {"/sql/delete_tg_user.sql","/sql/insert_5_tg_users.sql"})
+    @Sql(scripts = {"/sql/delete_tg_user.sql", "/sql/insert_5_tg_users.sql"})
     @Test
-    public void shouldCorrectlyDeleteTelegramUser(){
+    public void shouldCorrectlyDeleteTelegramUser() {
         //given
         TelegramUser newUser = new TelegramUser(12345L, "test1");
 

@@ -16,6 +16,7 @@ public class HelpCommand implements Command {
 
                     + "<b>Начать\\закончить работу с ботом</b>\n"
                     + "%s - начать работу со мной\n"
+                    + "%s - установить WB токен\n"
                     + "%s - приостановить работу со мной\n\n"
 
                     + "<b>Работа с товарами</b>\n"
@@ -28,9 +29,9 @@ public class HelpCommand implements Command {
                     + "%s - получить число новых заказов.\n\n"
 
                     + "%s - получить помощь в работе со мной\n",
-            START.getCommandName(), STOP.getCommandName(),
+            START.getCommandName(), SET_WB_TOKEN.getCommandName(), STOP.getCommandName(),
             GET_PRICE.getCommandName(), SET_PRICE.getCommandName(), SET_DISCOUNT.getCommandName(),
-            GET_NUM_ORDERS.getCommandName(), GET_NEW_ORDERS.getCommandName(),
+            GET_ALL_ORDERS.getCommandName(), GET_NEW_ORDERS.getCommandName(),
             HELP.getCommandName());
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {

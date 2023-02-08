@@ -37,4 +37,18 @@ public class TelegramUserServiceImpl implements TelegramUserService {
     public List<TelegramUser> findAll() {
         return telegramUserRepository.findAll();
     }
+
+    @Override
+    public boolean hasWbToken(Long chatId) {
+
+        Optional<TelegramUser> userOptional = findUserByChatId(chatId);
+
+        if (userOptional.isPresent()) {
+            TelegramUser user = userOptional.get();
+
+            return !user.getWbToken().isEmpty();
+        }
+
+        return false;
+    }
 }

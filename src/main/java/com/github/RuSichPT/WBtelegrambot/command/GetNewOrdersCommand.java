@@ -1,6 +1,8 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
+import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
 import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
 import kong.unirest.HttpResponse;
@@ -8,37 +10,35 @@ import kong.unirest.HttpStatus;
 import org.apache.http.HttpException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class GetNewOrdersCommand implements Command {
+public class GetNewOrdersCommand extends AbstractWbCommand {
 
-    private final SendBotMessageService sendBotMessageService;
     private final WbClientPrices wbClientPrices;
 
-    public static final String GET_NUM_ORDERS_COMMAND1 = "Новых заказов: %s\n";
-    public static final String GET_NEW_ORDERS_COMMAND2 = "Не удалось получить количество заказов";
+    public static final String MESSAGE1 = "Новых заказов: %s\n";
+    public static final String MESSAGE2 = "Не удалось получить количество заказов";
 
-    public GetNewOrdersCommand(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices) {
-        this.sendBotMessageService = sendBotMessageService;
+    public GetNewOrdersCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
+        super(sendBotMessageService, telegramUserService);
         this.wbClientPrices = wbClientPrices;
     }
 
     @Override
-    public void execute(Update update) {
-
+    public String executeWbCommand(Update update) {
         String command = update.getMessage().getText();
-
         String message;
         try {
-            HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders();
+            TelegramUser user = telegramUserService.findUserByChatId(update.getMessage().getChatId()).get();
+            HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders(user.getWbToken());
 
             if (httpResponse.getStatus() != HttpStatus.OK)
                 throw new HttpException();
 
-            message = String.format(GET_NUM_ORDERS_COMMAND1, httpResponse.getBody().getOrders().size());
+            message = String.format(MESSAGE1, httpResponse.getBody().getOrders().size());
 
         } catch (HttpException e) {
-            message = GET_NEW_ORDERS_COMMAND2;
+            message = MESSAGE2;
         }
 
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        return message;
     }
 }
