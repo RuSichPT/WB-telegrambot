@@ -14,4 +14,6 @@ public interface TelegramUserService {
     Optional<TelegramUser> findUserByChatId(Long chatId);
 
     List<TelegramUser> findAll();
+
+    boolean hasWbToken(Long chatId);
 }

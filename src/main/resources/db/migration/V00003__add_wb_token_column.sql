@@ -1,0 +1,2 @@
+ALTER TABLE tg_user
+ADD wbToken VARCHAR(200);

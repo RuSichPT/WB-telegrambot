@@ -9,7 +9,7 @@ public class StopCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
     private final TelegramUserService telegramUserService;
 
-    public final static String STOP_MESSAGE = "Уведомления о новыз заказах отключены. До свидания!  \uD83D\uDE1F.";
+    public final static String STOP_MESSAGE = "Уведомления о новыз заказах отключены. Wildberries token удален. До свидания!  \uD83D\uDE1F.";
 
     public StopCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
         this.sendBotMessageService = sendBotMessageService;
@@ -19,9 +19,8 @@ public class StopCommand implements Command {
     @Override
     public void execute(Update update) {
         Long chatId = update.getMessage().getChatId();
-        String userName= update.getMessage().getFrom().getUserName();
 
-        if (telegramUserService.findUserByChatId(chatId).isPresent()){
+        if (telegramUserService.findUserByChatId(chatId).isPresent()) {
             telegramUserService.deleteUserByChatId(chatId);
         }
         sendBotMessageService.sendMessage(update.getMessage().getChatId(), STOP_MESSAGE);

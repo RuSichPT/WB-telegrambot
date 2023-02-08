@@ -20,8 +20,11 @@ public class WbClientPricesTest {
     private final String ERROR_MESSAGE = "[\"данных номенклатур не было в выгруженном с портала шаблоне: [1234567],"
             + " добавление строк в шаблон запрещено\"]";
 
-    public WbClientPricesTest(@Value("${wb.api.path}") String WB_API_PATH, @Value("${wb.standart.token}") String token) {
-        this.wbClientPrices = new WbClientPricesImpl(WB_API_PATH, token);
+    private final String wbToken;
+
+    public WbClientPricesTest(@Value("${wb.api.path}") String WB_API_PATH, @Value("${wb.standart.test.token}") String wbToken) {
+        this.wbClientPrices = new WbClientPricesImpl(WB_API_PATH);
+        this.wbToken = wbToken;
     }
 
     @Test
@@ -30,7 +33,7 @@ public class WbClientPricesTest {
         Integer quantity = 0;
 
         //when
-        HttpResponse<List<PriceInfoGet>> httpResponse = wbClientPrices.getPriceInfo(quantity);
+        HttpResponse<List<PriceInfoGet>> httpResponse = wbClientPrices.getPriceInfo(quantity, wbToken);
         List<PriceInfoGet> priceInfoList = httpResponse.getBody();
 
         //then
@@ -43,7 +46,7 @@ public class WbClientPricesTest {
         //given
 
         //when
-        HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders();
+        HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders(wbToken);
         Orders orders = httpResponse.getBody();
 
         //then
@@ -60,7 +63,7 @@ public class WbClientPricesTest {
                 .build();
 
         //when
-        HttpResponse<Orders> httpResponse = wbClientPrices.getOrders(requestArgs);
+        HttpResponse<Orders> httpResponse = wbClientPrices.getOrders(requestArgs, wbToken);
         Orders orders = httpResponse.getBody();
 
         //then
@@ -74,7 +77,7 @@ public class WbClientPricesTest {
         PriceInfoSet price = new PriceInfoSet(1234567, 1000);
 
         //when
-        HttpResponse<JsonNode> httpResponse = wbClientPrices.setPriceInfo(price);
+        HttpResponse<JsonNode> httpResponse = wbClientPrices.setPriceInfo(price, wbToken);
 
         //then
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());
@@ -87,7 +90,7 @@ public class WbClientPricesTest {
         Discount discount = new Discount(1234567, 15);
 
         //when
-        HttpResponse<JsonNode> httpResponse = wbClientPrices.setDiscount(discount);
+        HttpResponse<JsonNode> httpResponse = wbClientPrices.setDiscount(discount, wbToken);
 
         //then
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());

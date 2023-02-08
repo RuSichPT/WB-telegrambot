@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.5.0-SNAPSHOT
+* - implemented /sewbtoken command.
+* - added wbToken in tg_user table in dataBase. Now it's necessary to send wb token to use bot.
+* - deleted wb token from application.properties. Now there is only wb token for tests wb client.
+* - significantly changes of tests.
+
 ## 0.4.2-SNAPSHOT
 * - fix bug in job 2; NumNewOrders were not resetting
 

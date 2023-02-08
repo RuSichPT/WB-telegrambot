@@ -8,63 +8,60 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class SetDiscountCommandTest extends AbstractPriceCommandTest {
-    private final SetDiscountCommand setDiscountCommand = new SetDiscountCommand(sendBotMessageService, wbClientPrices);
+import static com.github.RuSichPT.WBtelegrambot.command.CommandName.SET_DISCOUNT;
+import static com.github.RuSichPT.WBtelegrambot.command.SetDiscountCommand.*;
+
+public class SetDiscountCommandTest extends AbstractWbClientCommandTest {
+    private final SetDiscountCommand setDiscountCommand = new SetDiscountCommand(sendBotMessageService, telegramUserService, wbClientPrices);
 
     private Discount discount;
 
     @BeforeEach
     public void init() {
-        Mockito.when(httpResponse.getStatus()).thenReturn(HttpStatus.OK);
-        Mockito.when(httpResponse.getBody()).thenReturn(priceInfoGetList);
-        Mockito.when(wbClientPrices.getPriceInfo(0)).thenReturn(httpResponse);
+        Mockito.when(httpResponseList.getStatus()).thenReturn(HttpStatus.OK);
+        Mockito.when(httpResponseList.getBody()).thenReturn(priceInfoGetList);
+        Mockito.when(wbClientPrices.getPriceInfo(Mockito.eq(0), Mockito.any(String.class))).thenReturn(httpResponseList);
 
         discount = new Discount(12345678, 15);
         HttpResponse<JsonNode> httpResponse = Mockito.mock(HttpResponse.class);
         Mockito.when(httpResponse.getStatus()).thenReturn(HttpStatus.OK);
-        Mockito.when(wbClientPrices.setDiscount(discount)).thenReturn(httpResponse);
+        Mockito.when(wbClientPrices.setDiscount(Mockito.eq(discount), Mockito.any(String.class))).thenReturn(httpResponse);
+
+        initTelegramUserService();
     }
 
     @Test
-    public void shouldCorrectlyExecuteCommand1() {
+    public void shouldCorrectlySendMessage1() {
         //given
-        String command = "/setdiscount";
-        String answer = SetDiscountCommand.SET_DISCOUNT_MESSAGE1
+        String command = SET_DISCOUNT.getCommandName();
+        String answer = MESSAGE1
                 + String.format("%s = %s%%\n", priceInfoGetList.get(0).getNmId(), priceInfoGetList.get(0).getDiscount());
 
-        executeAndVerify(command, answer);
+        executeAndVerify(setDiscountCommand, command, answer);
     }
 
     @Test
-    public void shouldCorrectlyExecuteCommand2() {
+    public void shouldCorrectlySendMessage2() {
         //given
-        String command = String.format("/setdiscount %s = %s", discount.getNm(), discount.getDiscount());
-        String answer = String.format(SetDiscountCommand.SET_DISCOUNT_MESSAGE2, discount.getNm(), discount.getDiscount());
+        String command = String.format(SET_DISCOUNT.getCommandName() + " %s = %s", discount.getNm(), discount.getDiscount());
+        String answer = String.format(MESSAGE2, discount.getNm(), discount.getDiscount());
 
-        executeAndVerify(command, answer);
+        executeAndVerify(setDiscountCommand, command, answer);
     }
 
     @Test
-    public void shouldCorrectlyExecuteCommand3() {
+    public void shouldCorrectlySendMessage3_1() {
         //given
-        String command = "/setdiscount dsfg";
+        String command = SET_DISCOUNT.getCommandName() + " dsfg";
 
-        executeAndVerify(command, SetDiscountCommand.SET_DISCOUNT_MESSAGE3);
+        executeAndVerify(setDiscountCommand, command, MESSAGE3);
     }
 
     @Test
-    public void shouldCorrectlyExecuteCommand4() {
+    public void shouldCorrectlySendMessage3_2() {
         //given
-        String command = String.format("/setdiscount %s %s", discount.getNm(), discount.getDiscount());
+        String command = String.format(SET_DISCOUNT.getCommandName() + " %s %s", discount.getNm(), discount.getDiscount());
 
-        executeAndVerify(command, SetDiscountCommand.SET_DISCOUNT_MESSAGE3);
-    }
-
-    private void executeAndVerify(String command, String answer) {
-        //when
-        setDiscountCommand.execute(getUpdate(command));
-
-        //then
-        Mockito.verify(sendBotMessageService).sendMessage(chatId, answer);
+        executeAndVerify(setDiscountCommand, command, MESSAGE3);
     }
 }

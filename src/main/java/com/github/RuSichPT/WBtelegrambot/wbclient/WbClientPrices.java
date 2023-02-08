@@ -7,13 +7,13 @@ import kong.unirest.JsonNode;
 import java.util.List;
 
 public interface WbClientPrices {
-    HttpResponse<List<PriceInfoGet>> getPriceInfo(Integer quantity);
+    HttpResponse<List<PriceInfoGet>> getPriceInfo(Integer quantity, String wbToken);
 
-    HttpResponse<Orders> getNewOrders();
+    HttpResponse<Orders> getNewOrders(String wbToken);
 
-    HttpResponse<Orders> getOrders(OrderRequestArgs requestArgs);
+    HttpResponse<Orders> getOrders(OrderRequestArgs requestArgs, String wbToken);
 
-    HttpResponse<JsonNode> setPriceInfo(PriceInfoSet price);
+    HttpResponse<JsonNode> setPriceInfo(PriceInfoSet price, String wbToken);
 
-    HttpResponse<JsonNode> setDiscount(Discount discount);
+    HttpResponse<JsonNode> setDiscount(Discount discount, String wbToken);
 }

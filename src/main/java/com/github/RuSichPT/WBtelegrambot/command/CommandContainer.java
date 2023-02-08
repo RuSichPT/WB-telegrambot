@@ -22,11 +22,12 @@ public class CommandContainer {
                 .put(STOP.getCommandName(), new StopCommand(sendBotMessageService, telegramUserService))
                 .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
-                .put(GET_PRICE.getCommandName(), new GetPriceCommand(sendBotMessageService, wbClientPrices))
-                .put(SET_PRICE.getCommandName(), new SetPriceCommand(sendBotMessageService, wbClientPrices))
-                .put(SET_DISCOUNT.getCommandName(), new SetDiscountCommand(sendBotMessageService, wbClientPrices))
-                .put(GET_NUM_ORDERS.getCommandName(), new GetNumOrdersCommand(sendBotMessageService, wbClientPrices))
-                .put(GET_NEW_ORDERS.getCommandName(), new GetNewOrdersCommand(sendBotMessageService, wbClientPrices))
+                .put(GET_PRICE.getCommandName(), new GetPriceCommand(sendBotMessageService, telegramUserService, wbClientPrices))
+                .put(SET_PRICE.getCommandName(), new SetPriceCommand(sendBotMessageService, telegramUserService, wbClientPrices))
+                .put(SET_DISCOUNT.getCommandName(), new SetDiscountCommand(sendBotMessageService, telegramUserService, wbClientPrices))
+                .put(GET_ALL_ORDERS.getCommandName(), new GetAllOrdersCommand(sendBotMessageService, telegramUserService, wbClientPrices))
+                .put(GET_NEW_ORDERS.getCommandName(), new GetNewOrdersCommand(sendBotMessageService, telegramUserService, wbClientPrices))
+                .put(SET_WB_TOKEN.getCommandName(), new SetWbTokenCommand(sendBotMessageService, telegramUserService, wbClientPrices))
                 .build();
 
         unknownCommand = new UnknownCommand(sendBotMessageService);

@@ -26,6 +26,9 @@ public class TelegramUser {
     @Column(name = "numNewOrders")
     private Integer numNewOrders = 0;
 
+    @Column(name = "wbToken")
+    private String wbToken = "";
+
     public TelegramUser() {
     }
 
