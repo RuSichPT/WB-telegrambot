@@ -32,6 +32,13 @@ public class TelegramUser {
     public TelegramUser() {
     }
 
+    public TelegramUser(TelegramUser telegramUser){
+        this.chatId = telegramUser.getChatId();
+        this.userName = telegramUser.getUserName();
+        this.numNewOrders = telegramUser.getNumNewOrders();
+        this.wbToken = telegramUser.getWbToken();
+    }
+
     public TelegramUser(Long chatId, String userName) {
         this.chatId = chatId;
         this.userName = userName;

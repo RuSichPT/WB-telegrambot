@@ -12,10 +12,12 @@ import java.util.Optional;
 public class TelegramUserServiceImpl implements TelegramUserService {
 
     private final TelegramUserRepository telegramUserRepository;
+    private final EncryptTgUserService encryptTgUserService;
 
     @Autowired
-    public TelegramUserServiceImpl(TelegramUserRepository telegramUserRepository) {
+    public TelegramUserServiceImpl(TelegramUserRepository telegramUserRepository, EncryptTgUserService encryptTgUserService) {
         this.telegramUserRepository = telegramUserRepository;
+        this.encryptTgUserService = encryptTgUserService;
     }
 
     @Override
@@ -25,17 +27,30 @@ public class TelegramUserServiceImpl implements TelegramUserService {
 
     @Override
     public void saveUser(TelegramUser user) {
+        encryptTgUserService.code(user);
         telegramUserRepository.save(user);
     }
 
     @Override
     public Optional<TelegramUser> findUserByChatId(Long chatId) {
-        return telegramUserRepository.findById(chatId);
+        Optional<TelegramUser> opt = telegramUserRepository.findById(chatId);
+
+        opt.ifPresent(encryptTgUserService::decode);
+
+        return opt;
     }
 
     @Override
     public List<TelegramUser> findAll() {
-        return telegramUserRepository.findAll();
+
+        List<TelegramUser> list = telegramUserRepository.findAll();
+
+        for (TelegramUser tgU:
+             list) {
+            encryptTgUserService.decode(tgU);
+        }
+
+        return list;
     }
 
     @Override

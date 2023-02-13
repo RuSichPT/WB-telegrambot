@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.6.0-SNAPSHOT
+* - added Dockerfile for deploy
+* - added EncryptTgUserService for data base
+
 ## 0.5.0-SNAPSHOT
 * - implemented /sewbtoken command.
 * - added wbToken in tg_user table in dataBase. Now it's necessary to send wb token to use bot.

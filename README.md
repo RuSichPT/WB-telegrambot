@@ -2,16 +2,16 @@
 Telegram bot for work with Wildberries
 
 ## To start it
-Fill application.properties:
- - bot.username = input own bot username
+Fill application.properties or create environment variables:
+ - bot.username = ${BOT_USERNAME}
+ - bot.token = ${BOT_TOKEN}
+ - spring.datasource.url = jdbc:mysql://${DATA_BASE_URL}
+ - spring.datasource.username = ${DATA_BASE_USERNAME}
+ - spring.datasource.password = ${DATA_BASE_PASSWORD}
 
- - bot.token = input own bot token
+For encryption in dataBase (any int value)
+ - encrypt.password = ${ENCRYPT_PASSWORD}
 
- - spring.datasource.url = jdbc:mysql:// input own url
-
- - spring.datasource.username = input own username
-
- - spring.datasource.password = input own password
-
-## To work tests 
-wb.standart.test.token = input own wb token for tests WB client
+For tests WB client
+ - wb.standart.test.token = ${WB_STD_TEST_TOKEN}
+ 
