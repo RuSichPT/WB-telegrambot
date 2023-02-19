@@ -45,8 +45,8 @@ public class TelegramUserServiceImpl implements TelegramUserService {
 
         List<TelegramUser> list = telegramUserRepository.findAll();
 
-        for (TelegramUser tgU:
-             list) {
+        for (TelegramUser tgU :
+                list) {
             encryptTgUserService.decode(tgU);
         }
 

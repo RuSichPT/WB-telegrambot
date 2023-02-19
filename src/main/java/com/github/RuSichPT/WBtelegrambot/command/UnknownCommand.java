@@ -17,4 +17,9 @@ public class UnknownCommand implements Command {
     public void execute(Update update) {
         sendBotMessageService.sendMessage(update.getMessage().getChatId(), UNKNOWN_MESSAGE);
     }
+
+    @Override
+    public void executeCallback(Update update) {
+
+    }
 }

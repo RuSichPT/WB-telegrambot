@@ -23,7 +23,7 @@ public class GetNewOrdersCommand extends AbstractWbCommand {
     }
 
     @Override
-    public String executeWbCommand(Update update) {
+    public void executeWbCommand(Update update) {
         String command = update.getMessage().getText();
         String message;
         try {
@@ -39,6 +39,6 @@ public class GetNewOrdersCommand extends AbstractWbCommand {
             message = MESSAGE2;
         }
 
-        return message;
+        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
     }
 }

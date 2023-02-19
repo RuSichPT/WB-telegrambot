@@ -32,7 +32,7 @@ public class TelegramUser {
     public TelegramUser() {
     }
 
-    public TelegramUser(TelegramUser telegramUser){
+    public TelegramUser(TelegramUser telegramUser) {
         this.chatId = telegramUser.getChatId();
         this.userName = telegramUser.getUserName();
         this.numNewOrders = telegramUser.getNumNewOrders();

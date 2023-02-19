@@ -6,23 +6,17 @@ import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class GetPriceCommand extends AbstractWbCommand {
 
     private final WbClientPrices wbClientPrices;
     public static final String MESSAGE1 =
-            "Чтобы получить информацию по номенклатурам, их ценам, скидкам и промокодам введите данные в виде:\n"
-                    + CommandName.GET_PRICE.getCommandName() + " filter \n"
-                    + "где filter:\n"
-                    + "2 - товар с нулевым остатком.\n"
-                    + "1 - товар с ненулевым остатком.\n"
-                    + "0 - вернётся весь товар.\n\n";
+            "Выберите фильтер для команды:\n\n";
 
     public static final String MESSAGE2 = "https://www.wildberries.ru/catalog/%s/detail.aspx? \n"
             + "Номенклатура товара: %s\n"
@@ -30,10 +24,9 @@ public class GetPriceCommand extends AbstractWbCommand {
             + "Скидка: %s%%\n"
             + "Промокод: %s\n\n";
 
-    public static final String MESSAGE3 = "Неправильно указан filter. Возможные значения: \n"
-            + "2 - товар с нулевым остатком.\n"
-            + "1 - товар с ненулевым остатком.\n"
-            + "0 - вернётся весь товар.\n\n";
+    public static final String CALLBACK_MESSAGE1 = "0";
+    public static final String CALLBACK_MESSAGE2 = "1";
+    public static final String CALLBACK_MESSAGE3 = "2";
 
 
     public GetPriceCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
@@ -42,28 +35,54 @@ public class GetPriceCommand extends AbstractWbCommand {
     }
 
     @Override
-    public String executeWbCommand(Update update) {
+    public void executeWbCommand(Update update) {
         String command = update.getMessage().getText();
-        String[] comStrings = command.split(SPACE);
-        String message = MESSAGE3;
-
-        int COMMAND_LENGTH = 2;
 
         if (command.equalsIgnoreCase(CommandName.GET_PRICE.getCommandName())) {
-            message = MESSAGE1;
-        } else if (comStrings.length == COMMAND_LENGTH) {
-            if (isNumeric(comStrings[1])) {
-                int quantity = Integer.parseInt(comStrings[1]);
-
-                TelegramUser user = telegramUserService.findUserByChatId(update.getMessage().getChatId()).get();
-                List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity, user.getWbToken()).getBody();
-
-                message = priceInfoList.stream()
-                        .map(pI -> (String.format(MESSAGE2, pI.getNmId(), pI.getNmId(), pI.getPrice(), pI.getDiscount(), pI.getPromoCode())))
-                        .collect(Collectors.joining());
-            }
+            sendBotMessageService.sendMessage(update.getMessage().getChatId(), MESSAGE1, createButtons());
         }
-
-        return message;
     }
+
+    @Override
+    public void executeCallback(Update update) {
+
+        int quantity = Integer.parseInt(update.getCallbackQuery().getData());
+        Long chatId = update.getCallbackQuery().getMessage().getChatId();
+
+        TelegramUser user = telegramUserService.findUserByChatId(chatId).get();
+        List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity, user.getWbToken()).getBody();
+
+        String message = priceInfoList.stream()
+                .map(pI -> (String.format(MESSAGE2, pI.getNmId(), pI.getNmId(), pI.getPrice(), pI.getDiscount(), pI.getPromoCode())))
+                .collect(Collectors.joining());
+
+        sendBotMessageService.sendMessage(chatId, message);
+    }
+
+    private List<List<InlineKeyboardButton>> createButtons() {
+        InlineKeyboardButton button0 = new InlineKeyboardButton("Весь товар");
+        button0.setCallbackData(CALLBACK_MESSAGE1);
+        InlineKeyboardButton button1 = new InlineKeyboardButton("Товар с ненулевым остатком");
+        button1.setCallbackData(CALLBACK_MESSAGE2);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("Товар с нулевым остатком");
+        button2.setCallbackData(CALLBACK_MESSAGE3);
+
+        List<InlineKeyboardButton> row0 = new ArrayList<>();
+        row0.add(button0);
+
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(button1);
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(button2);
+
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        buttons.add(row0);
+        buttons.add(row1);
+        buttons.add(row2);
+
+        return buttons;
+    }
+
+
 }

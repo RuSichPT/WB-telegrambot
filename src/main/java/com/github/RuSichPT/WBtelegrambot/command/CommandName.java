@@ -4,21 +4,28 @@ package com.github.RuSichPT.WBtelegrambot.command;
  * Enumeration for {@link Command}'s.
  */
 public enum CommandName {
-    START("/start"),
-    STOP("/stop"),
-    HELP("/help"),
-    NO(""),
-    GET_PRICE("/getpriceinfo"),
-    SET_PRICE("/setprice"),
-    SET_DISCOUNT("/setdiscount"),
-    GET_ALL_ORDERS("/getallorders"),
-    GET_NEW_ORDERS("/getneworders"),
-    SET_WB_TOKEN("/setwbtoken");
+    START("/start", "Начать работу с ботом."),
+    STOP("/stop", "Закончить работу с ботом."),
+    HELP("/help", "Получить помощь по работе с ботом."),
+    NO("", ""),
+    GET_PRICE("/getpriceinfo", "Получить информацию о товарах на Wildberries."),
+    SET_PRICE("/setprice", "Установить новую цену для товара."),
+    SET_DISCOUNT("/setdiscount", "Установить новую скидку для товара."),
+    GET_ALL_ORDERS("/getallorders", "Получить количество всех заказов (маркетплейс)."),
+    GET_NEW_ORDERS("/getneworders", "Получить количеств новых заказов (маркетплейс)."),
+    SET_WB_TOKEN("/setwbtoken", "Установить Wildberries токен");
 
     private final String commandName;
 
-    CommandName(String command) {
+    private final String description;
+
+    CommandName(String command, String description) {
         this.commandName = command;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getCommandName() {

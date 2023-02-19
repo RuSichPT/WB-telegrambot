@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static com.github.RuSichPT.WBtelegrambot.command.CommandName.GET_PRICE;
-import static com.github.RuSichPT.WBtelegrambot.command.GetPriceCommand.*;
+import static com.github.RuSichPT.WBtelegrambot.command.GetPriceCommand.MESSAGE1;
+import static com.github.RuSichPT.WBtelegrambot.command.GetPriceCommand.MESSAGE2;
+import static org.mockito.ArgumentMatchers.eq;
 
 public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
 
@@ -16,7 +18,7 @@ public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
     public void init() {
         Mockito.when(httpResponseList.getStatus()).thenReturn(HttpStatus.OK);
         Mockito.when(httpResponseList.getBody()).thenReturn(priceInfoGetList);
-        Mockito.when(wbClientPrices.getPriceInfo(Mockito.eq(0), Mockito.any(String.class))).thenReturn(httpResponseList);
+        Mockito.when(wbClientPrices.getPriceInfo(eq(0), Mockito.any(String.class))).thenReturn(httpResponseList);
 
         initTelegramUserService();
     }
@@ -26,13 +28,17 @@ public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
         //given
         String command = GET_PRICE.getCommandName();
 
-        executeAndVerify(getPriceCommand, command, MESSAGE1);
+        //when
+        getPriceCommand.execute(getUpdate(command));
+
+        //then
+        Mockito.verify(sendBotMessageService).sendMessage(eq(chatId), eq(MESSAGE1), Mockito.any());
     }
 
     @Test
     public void shouldCorrectlySendMessage2() {
         //given
-        String command = GET_PRICE.getCommandName() + " 0";
+        String command = GET_PRICE.getCommandName();
         String answer = String.format(MESSAGE2,
                 priceInfoGetList.get(0).getNmId(),
                 priceInfoGetList.get(0).getNmId(),
@@ -40,14 +46,10 @@ public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
                 priceInfoGetList.get(0).getDiscount(),
                 priceInfoGetList.get(0).getPromoCode());
 
-        executeAndVerify(getPriceCommand, command, answer);
-    }
+        //when
+        getPriceCommand.executeCallback(getUpdate(command));
 
-    @Test
-    public void shouldCorrectlySendMessage3() {
-        //given
-        String command = GET_PRICE.getCommandName() + " p";
-
-        executeAndVerify(getPriceCommand, command, MESSAGE3);
+        //then
+        Mockito.verify(sendBotMessageService).sendMessage(chatId, answer);
     }
 }

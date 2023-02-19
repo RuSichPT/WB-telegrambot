@@ -6,6 +6,7 @@ import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageServiceImpl;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserServiceImpl;
 import org.mockito.Mockito;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -23,11 +24,17 @@ public class AbstractCommandTest {
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
         User user = Mockito.mock(User.class);
+        CallbackQuery callbackQuery = Mockito.mock(CallbackQuery.class);
+
         Mockito.when(message.getChatId()).thenReturn(chatId);
         Mockito.when(message.getText()).thenReturn(command);
         Mockito.when(message.getFrom()).thenReturn(user);
         Mockito.when(user.getUserName()).thenReturn("username");
+        Mockito.when(callbackQuery.getData()).thenReturn("0");
+        Mockito.when(callbackQuery.getMessage()).thenReturn(message);
+
         update.setMessage(message);
+        update.setCallbackQuery(callbackQuery);
 
         return update;
     }

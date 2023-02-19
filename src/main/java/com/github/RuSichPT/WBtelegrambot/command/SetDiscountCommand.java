@@ -33,7 +33,7 @@ public class SetDiscountCommand extends AbstractWbCommand {
     }
 
     @Override
-    public String executeWbCommand(Update update) {
+    public void executeWbCommand(Update update) {
         String command = update.getMessage().getText();
         String[] comStrings = command.split(SPACE);
         String message = MESSAGE3;
@@ -58,6 +58,6 @@ public class SetDiscountCommand extends AbstractWbCommand {
                 }
             }
         }
-        return message;
+        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
     }
 }

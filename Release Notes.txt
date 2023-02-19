@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.7.0-SNAPSHOT
+* - added menu
+* - added buttons for command /getpriceinfo
+
 ## 0.6.0-SNAPSHOT
 * - added Dockerfile for deploy
 * - added EncryptTgUserService for data base

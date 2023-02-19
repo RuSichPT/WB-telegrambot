@@ -34,4 +34,9 @@ public class StartCommand implements Command {
 
         sendBotMessageService.sendMessage(chatId, START_MESSAGE);
     }
+
+    @Override
+    public void executeCallback(Update update) {
+
+    }
 }

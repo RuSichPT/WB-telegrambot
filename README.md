@@ -2,7 +2,7 @@
 Telegram bot for work with Wildberries
 
 ## To start it
-Fill application.properties or create environment variables:
+Fill in application.properties or create environment variables:
  - bot.username = ${BOT_USERNAME}
  - bot.token = ${BOT_TOKEN}
  - spring.datasource.url = jdbc:mysql://${DATA_BASE_URL}

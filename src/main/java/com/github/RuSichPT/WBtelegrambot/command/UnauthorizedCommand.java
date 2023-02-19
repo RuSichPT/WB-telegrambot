@@ -14,7 +14,7 @@ public class UnauthorizedCommand extends AbstractWbCommand {
             + CommandName.SET_WB_TOKEN.getCommandName() + " WB токен\n\n";
 
     @Override
-    public String executeWbCommand(Update update) {
-        return MESSAGE;
+    public void executeWbCommand(Update update) {
+        sendBotMessageService.sendMessage(update.getMessage().getChatId(), MESSAGE);
     }
 }

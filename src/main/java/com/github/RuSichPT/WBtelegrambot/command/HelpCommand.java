@@ -42,4 +42,9 @@ public class HelpCommand implements Command {
     public void execute(Update update) {
         sendBotMessageService.sendMessage(update.getMessage().getChatId(), HELP_MESSAGE);
     }
+
+    @Override
+    public void executeCallback(Update update) {
+
+    }
 }

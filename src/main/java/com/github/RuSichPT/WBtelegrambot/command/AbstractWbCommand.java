@@ -8,7 +8,7 @@ public abstract class AbstractWbCommand implements Command {
     protected final SendBotMessageService sendBotMessageService;
     protected final TelegramUserService telegramUserService;
 
-    public abstract String executeWbCommand(Update update);
+    public abstract void executeWbCommand(Update update);
 
     public AbstractWbCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
         this.sendBotMessageService = sendBotMessageService;
@@ -25,9 +25,11 @@ public abstract class AbstractWbCommand implements Command {
 
     @Override
     public final void execute(Update update) {
-        String message = filter(update).executeWbCommand(update);
-
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        filter(update).executeWbCommand(update);
     }
 
+    @Override
+    public void executeCallback(Update update) {
+
+    }
 }

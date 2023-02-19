@@ -60,4 +60,9 @@ public class SetWbTokenCommand implements Command {
 
         sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
     }
+
+    @Override
+    public void executeCallback(Update update) {
+
+    }
 }
