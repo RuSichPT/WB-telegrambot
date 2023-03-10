@@ -6,11 +6,14 @@ import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Order;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
 import kong.unirest.HttpResponse;
 import kong.unirest.HttpStatus;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static com.github.RuSichPT.WBtelegrambot.service.FindNewOrderServiceImpl.MESSAGE;
@@ -26,7 +29,7 @@ public class FindNewOrderServiceTest {
 
     private final HttpResponse<Orders> httpResponse = Mockito.mock(HttpResponse.class);
     private final Orders orders = Mockito.mock(Orders.class);
-    private final List<Order> orderList = Mockito.mock(List.class);
+    private final List<Order> orderList = createListOrder();
 
     private final int NUM_USERS = 3;
 
@@ -41,15 +44,16 @@ public class FindNewOrderServiceTest {
     @Test
     public void shouldCorrectlyNotifyAllUsers() {
         //given
-        Mockito.when(orderList.size()).thenReturn(1);
         Mockito.when(telegramUserService.findAll()).thenReturn(createListTelegramUser(0));
+        Order order = orderList.get(0);
+        String message = String.format(MESSAGE, order.getNmId(), order.getArticle(), order.getPrice());
 
         //when
         findNewOrderService.findNewOrders();
 
         //then
         Long chatId = 12564L;
-        Mockito.verify(sendBotMessageService, times(NUM_USERS)).sendMessage(chatId, MESSAGE);
+        Mockito.verify(sendBotMessageService, times(NUM_USERS)).sendMessage(chatId, message);
     }
 
     @Test
@@ -57,7 +61,7 @@ public class FindNewOrderServiceTest {
         //given
         List<TelegramUser> list = createListTelegramUser(2);
         List<TelegramUser> newList = createListTelegramUser(0);
-        Mockito.when(orderList.size()).thenReturn(0);
+        orderList.clear();
         Mockito.when(telegramUserService.findAll()).thenReturn(list);
 
         //when
@@ -79,5 +83,15 @@ public class FindNewOrderServiceTest {
         }
 
         return list;
+    }
+
+    private List<Order> createListOrder() {
+        ArrayList<Order> orders = new ArrayList<>();
+        Order order = new Order();
+        order.setNmId(123456);
+        order.setArticle("article");
+        order.setPrice(3568);
+        orders.add(order);
+        return orders;
     }
 }
