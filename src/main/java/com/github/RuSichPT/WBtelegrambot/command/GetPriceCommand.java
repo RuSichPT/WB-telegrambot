@@ -18,11 +18,12 @@ public class GetPriceCommand extends AbstractWbCommand {
     public static final String MESSAGE1 =
             "Выберите фильтер для команды:\n\n";
 
-    public static final String MESSAGE2 = "https://www.wildberries.ru/catalog/%s/detail.aspx? \n"
-            + "Номенклатура товара: %s\n"
+    public static final String MESSAGE2 = "Номенклатура товара: %s\n"
             + "Цена: %s\n"
             + "Скидка: %s%%\n"
-            + "Промокод: %s\n\n";
+            + "Промокод: %s\n"
+            + "Цена со скидкой: %s\n"
+            + "https://www.wildberries.ru/catalog/%s/detail.aspx\n\n";
 
     public static final String CALLBACK_MESSAGE1 = "0";
     public static final String CALLBACK_MESSAGE2 = "1";
@@ -53,7 +54,8 @@ public class GetPriceCommand extends AbstractWbCommand {
         List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity, user.getWbToken()).getBody();
 
         String message = priceInfoList.stream()
-                .map(pI -> (String.format(MESSAGE2, pI.getNmId(), pI.getNmId(), pI.getPrice(), pI.getDiscount(), pI.getPromoCode())))
+                .map(pI -> (String.format(MESSAGE2, pI.getNmId(), pI.getPrice(),
+                        pI.getDiscount(), pI.getPromoCode(), pI.getPrice() * (100 - pI.getDiscount()) / 100L, pI.getNmId())))
                 .collect(Collectors.joining());
 
         sendBotMessageService.sendMessage(chatId, message);
