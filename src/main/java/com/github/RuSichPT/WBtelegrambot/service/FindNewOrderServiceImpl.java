@@ -18,7 +18,7 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
     private final WbClientPrices wbClientPrices;
     private final TelegramUserService telegramUserService;
 
-    public static final String MESSAGE = "Новый заказ:\n"
+    public static final String MESSAGE = "Новый заказ!\n"
             + "Номенклатура товара: %s\n"
             + "Артикул: %s\n"
             + "Цена: %s\n\n";
@@ -51,7 +51,7 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
                     if (numNewOrders != 0) {
                         List<Order> orders = httpResponse.getBody().getOrders();
                         String message = orders.stream()
-                                .map(o -> (String.format(MESSAGE, o.getNmId(), o.getArticle(), o.getPrice())))
+                                .map(o -> (String.format(MESSAGE, o.getNmId(), o.getArticle(), o.getPrice()/100L)))
                                 .collect(Collectors.joining());
                         sendBotMessageService.sendMessage(tu.getChatId(), message);
                     }
