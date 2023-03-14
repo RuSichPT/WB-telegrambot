@@ -4,24 +4,32 @@ import com.github.RuSichPT.WBtelegrambot.bot.WbTelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
- * Implementation of {@link SendBotMessageService} interface.
+ * Implementation of {@link SendBotService} interface.
  */
 @Service
-public class SendBotMessageServiceImpl implements SendBotMessageService {
+public class SendBotServiceImpl implements SendBotService {
 
     private final WbTelegramBot wbTelegramBot;
 
     @Autowired
-    public SendBotMessageServiceImpl(WbTelegramBot wbTelegramBot) {
+    public SendBotServiceImpl(WbTelegramBot wbTelegramBot) {
         this.wbTelegramBot = wbTelegramBot;
     }
 
@@ -48,6 +56,21 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
 
         executeSendMessage(sendMessage);
+    }
+
+    @Override
+    public void sendPhoto(Long chatId, URL url, String message) throws IOException {
+        InputStream stream = url.openStream();
+
+        InputFile photo = new InputFile(stream, "photo");
+        SendPhoto sendPhoto = new SendPhoto(String.valueOf(chatId), photo);
+        sendPhoto.setCaption(message);
+
+        try {
+            wbTelegramBot.execute(sendPhoto);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
     private SendMessage createSendMessage(Long chatId, String message) {

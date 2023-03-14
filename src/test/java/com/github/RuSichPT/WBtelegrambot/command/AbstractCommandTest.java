@@ -1,8 +1,8 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageServiceImpl;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotServiceImpl;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserServiceImpl;
 import org.mockito.Mockito;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class AbstractCommandTest {
 
-    protected final SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageServiceImpl.class);
+    protected final SendBotService sendBotService = Mockito.mock(SendBotServiceImpl.class);
     protected final TelegramUserService telegramUserService = Mockito.mock(TelegramUserServiceImpl.class);
 
     protected final Long chatId = 1234567824356L;
@@ -53,6 +53,6 @@ public class AbstractCommandTest {
         commandObj.execute(getUpdate(command));
 
         //then
-        Mockito.verify(sendBotMessageService).sendMessage(chatId, answer);
+        Mockito.verify(sendBotService).sendMessage(chatId, answer);
     }
 }

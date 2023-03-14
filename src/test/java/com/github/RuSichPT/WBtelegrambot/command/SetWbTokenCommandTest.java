@@ -10,7 +10,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.SetWbTokenCommand.*;
 
 public class SetWbTokenCommandTest extends AbstractWbClientCommandTest {
 
-    private final SetWbTokenCommand setWbTokenCommand = new SetWbTokenCommand(sendBotMessageService, telegramUserService, wbClientPrices);
+    private final SetWbTokenCommand setWbTokenCommand = new SetWbTokenCommand(sendBotService, telegramUserService, wbClientPrices);
 
     @BeforeEach
     public void init() {

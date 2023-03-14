@@ -1,7 +1,7 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
@@ -17,8 +17,8 @@ public class GetNewOrdersCommand extends AbstractWbCommand {
     public static final String MESSAGE1 = "Новых заказов: %s\n";
     public static final String MESSAGE2 = "Не удалось получить количество заказов";
 
-    public GetNewOrdersCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
-        super(sendBotMessageService, telegramUserService);
+    public GetNewOrdersCommand(SendBotService sendBotService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
+        super(sendBotService, telegramUserService);
         this.wbClientPrices = wbClientPrices;
     }
 
@@ -39,6 +39,6 @@ public class GetNewOrdersCommand extends AbstractWbCommand {
             message = MESSAGE2;
         }
 
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        sendBotService.sendMessage(update.getMessage().getChatId(), message);
     }
 }

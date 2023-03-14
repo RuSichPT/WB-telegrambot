@@ -11,7 +11,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.GetNewOrdersCommand.MESS
 
 public class GetNewOrdersCommandTest extends AbstractWbClientCommandTest {
 
-    private final GetNewOrdersCommand getNewOrdersCommand = new GetNewOrdersCommand(sendBotMessageService, telegramUserService, wbClientPrices);
+    private final GetNewOrdersCommand getNewOrdersCommand = new GetNewOrdersCommand(sendBotService, telegramUserService, wbClientPrices);
 
     @BeforeEach
     public void init() {

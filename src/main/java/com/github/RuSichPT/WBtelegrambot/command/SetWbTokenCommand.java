@@ -1,7 +1,7 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.Orders;
@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
 public class SetWbTokenCommand implements Command {
-    protected final SendBotMessageService sendBotMessageService;
+    protected final SendBotService sendBotService;
     protected final TelegramUserService telegramUserService;
     private final WbClientPrices wbClientPrices;
 
@@ -25,8 +25,8 @@ public class SetWbTokenCommand implements Command {
             + "Сгенерируйте новый в личном кабинете Wildberries.";
     public static final String MESSAGE4 = "Неправильный вид команды!";
 
-    public SetWbTokenCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
-        this.sendBotMessageService = sendBotMessageService;
+    public SetWbTokenCommand(SendBotService sendBotService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
+        this.sendBotService = sendBotService;
         this.telegramUserService = telegramUserService;
         this.wbClientPrices = wbClientPrices;
     }
@@ -58,11 +58,6 @@ public class SetWbTokenCommand implements Command {
             telegramUserService.saveUser(user);
         }
 
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
-    }
-
-    @Override
-    public void executeCallback(Update update) {
-
+        sendBotService.sendMessage(update.getMessage().getChatId(), message);
     }
 }

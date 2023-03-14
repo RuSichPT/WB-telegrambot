@@ -1,17 +1,17 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public abstract class AbstractWbCommand implements Command {
-    protected final SendBotMessageService sendBotMessageService;
+    protected final SendBotService sendBotService;
     protected final TelegramUserService telegramUserService;
 
     public abstract void executeWbCommand(Update update);
 
-    public AbstractWbCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public AbstractWbCommand(SendBotService sendBotService, TelegramUserService telegramUserService) {
+        this.sendBotService = sendBotService;
         this.telegramUserService = telegramUserService;
     }
 
@@ -19,7 +19,7 @@ public abstract class AbstractWbCommand implements Command {
         if (telegramUserService.hasWbToken(update.getMessage().getChatId())) {
             return this;
         } else {
-            return new UnauthorizedCommand(sendBotMessageService, telegramUserService);
+            return new UnauthorizedCommand(sendBotService, telegramUserService);
         }
     }
 
@@ -28,8 +28,4 @@ public abstract class AbstractWbCommand implements Command {
         filter(update).executeWbCommand(update);
     }
 
-    @Override
-    public void executeCallback(Update update) {
-
-    }
 }

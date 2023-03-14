@@ -1,7 +1,7 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoSet;
@@ -28,8 +28,8 @@ public class SetPriceCommand extends AbstractWbCommand {
     public static final String MESSAGE2 = "Цена товара %s успешно изменена на %s";
     public static final String MESSAGE3 = "Не удалось изменить цену!";
 
-    public SetPriceCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
-        super(sendBotMessageService, telegramUserService);
+    public SetPriceCommand(SendBotService sendBotService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
+        super(sendBotService, telegramUserService);
         this.wbClientPrices = wbClientPrices;
     }
 
@@ -59,6 +59,6 @@ public class SetPriceCommand extends AbstractWbCommand {
                 }
             }
         }
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        sendBotService.sendMessage(update.getMessage().getChatId(), message);
     }
 }

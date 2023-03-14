@@ -12,7 +12,7 @@ import static org.mockito.ArgumentMatchers.eq;
 
 public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
 
-    private final GetPriceCommand getPriceCommand = new GetPriceCommand(sendBotMessageService, telegramUserService, wbClientPrices);
+    private final GetPriceCommand getPriceCommand = new GetPriceCommand(sendBotService, telegramUserService, wbClientPrices);
 
     @BeforeEach
     public void init() {
@@ -32,7 +32,7 @@ public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
         getPriceCommand.execute(getUpdate(command));
 
         //then
-        Mockito.verify(sendBotMessageService).sendMessage(eq(chatId), eq(MESSAGE1), Mockito.any());
+        Mockito.verify(sendBotService).sendMessage(eq(chatId), eq(MESSAGE1), Mockito.any());
     }
 
     @Test
@@ -41,15 +41,16 @@ public class GetPriceInfoCommandTest extends AbstractWbClientCommandTest {
         String command = GET_PRICE.getCommandName();
         String answer = String.format(MESSAGE2,
                 priceInfoGetList.get(0).getNmId(),
-                priceInfoGetList.get(0).getNmId(),
                 priceInfoGetList.get(0).getPrice(),
                 priceInfoGetList.get(0).getDiscount(),
-                priceInfoGetList.get(0).getPromoCode());
+                priceInfoGetList.get(0).getPromoCode(),
+                priceInfoGetList.get(0).getPrice() * (100 - priceInfoGetList.get(0).getDiscount()) / 100L,
+                priceInfoGetList.get(0).getNmId());
 
         //when
         getPriceCommand.executeCallback(getUpdate(command));
 
         //then
-        Mockito.verify(sendBotMessageService).sendMessage(chatId, answer);
+        Mockito.verify(sendBotService).sendMessage(chatId, answer);
     }
 }

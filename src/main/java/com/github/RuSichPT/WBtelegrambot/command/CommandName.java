@@ -13,7 +13,8 @@ public enum CommandName {
     SET_DISCOUNT("/setdiscount", "Установить новую скидку для товара."),
     GET_ALL_ORDERS("/getallorders", "Получить количество всех заказов (маркетплейс)."),
     GET_NEW_ORDERS("/getneworders", "Получить количеств новых заказов (маркетплейс)."),
-    SET_WB_TOKEN("/setwbtoken", "Установить Wildberries токен");
+    SET_WB_TOKEN("/setwbtoken", "Установить Wildberries токен"),
+    TEST("/test", "");
 
     private final String commandName;
 

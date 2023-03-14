@@ -1,13 +1,13 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class StartCommand implements Command {
 
-    private final SendBotMessageService sendBotMessageService;
+    private final SendBotService sendBotService;
     private final TelegramUserService telegramUserService;
 
     public final static String START_MESSAGE = "Привет. <b>Я Wildberries Telegram Bot</b>.\n" +
@@ -17,8 +17,8 @@ public class StartCommand implements Command {
             + CommandName.SET_WB_TOKEN.getCommandName() + " WB токен\n\n"
             + "Напиши /help чтобы узнать что я еще умею.";
 
-    public StartCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public StartCommand(SendBotService sendBotService, TelegramUserService telegramUserService) {
+        this.sendBotService = sendBotService;
         this.telegramUserService = telegramUserService;
     }
 
@@ -32,11 +32,6 @@ public class StartCommand implements Command {
             telegramUserService.saveUser(user);
         }
 
-        sendBotMessageService.sendMessage(chatId, START_MESSAGE);
-    }
-
-    @Override
-    public void executeCallback(Update update) {
-
+        sendBotService.sendMessage(chatId, START_MESSAGE);
     }
 }

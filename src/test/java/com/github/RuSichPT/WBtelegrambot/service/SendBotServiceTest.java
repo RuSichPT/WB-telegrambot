@@ -7,15 +7,15 @@ import org.mockito.Mockito;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class SendBotMessageServiceTest {
+public class SendBotServiceTest {
 
-    private SendBotMessageServiceImpl sendBotMessageService;
+    private SendBotServiceImpl sendBotService;
     private WbTelegramBot wbTelegramBot;
 
     @BeforeEach
     public void init() {
         wbTelegramBot = Mockito.mock(WbTelegramBot.class);
-        sendBotMessageService = new SendBotMessageServiceImpl(wbTelegramBot);
+        sendBotService = new SendBotServiceImpl(wbTelegramBot);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class SendBotMessageServiceTest {
         sendMessage.enableHtml(true);
 
         //when
-        sendBotMessageService.sendMessage(chatId, message);
+        sendBotService.sendMessage(chatId, message);
 
         //then
         Mockito.verify(wbTelegramBot).execute(sendMessage);

@@ -17,7 +17,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.GetAllOrdersCommand.MESS
 
 public class GetAllOrdersCommandTest extends AbstractWbClientCommandTest {
 
-    private final GetAllOrdersCommand getAllOrdersCommand = new GetAllOrdersCommand(sendBotMessageService, telegramUserService, wbClientPrices);
+    private final GetAllOrdersCommand getAllOrdersCommand = new GetAllOrdersCommand(sendBotService, telegramUserService, wbClientPrices);
 
     private final HttpResponse<Orders> httpResponseOrders2 = Mockito.mock(HttpResponse.class);
     private final Orders orders2 = Mockito.mock(Orders.class);

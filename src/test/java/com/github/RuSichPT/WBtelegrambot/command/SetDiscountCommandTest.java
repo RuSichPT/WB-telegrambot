@@ -12,7 +12,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.CommandName.SET_DISCOUNT
 import static com.github.RuSichPT.WBtelegrambot.command.SetDiscountCommand.*;
 
 public class SetDiscountCommandTest extends AbstractWbClientCommandTest {
-    private final SetDiscountCommand setDiscountCommand = new SetDiscountCommand(sendBotMessageService, telegramUserService, wbClientPrices);
+    private final SetDiscountCommand setDiscountCommand = new SetDiscountCommand(sendBotService, telegramUserService, wbClientPrices);
 
     private Discount discount;
 

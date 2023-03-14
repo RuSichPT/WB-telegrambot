@@ -1,18 +1,18 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class StopCommand implements Command {
 
-    private final SendBotMessageService sendBotMessageService;
+    private final SendBotService sendBotService;
     private final TelegramUserService telegramUserService;
 
     public final static String STOP_MESSAGE = "Уведомления о новыз заказах отключены. Wildberries token удален. До свидания!  \uD83D\uDE1F.";
 
-    public StopCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public StopCommand(SendBotService sendBotService, TelegramUserService telegramUserService) {
+        this.sendBotService = sendBotService;
         this.telegramUserService = telegramUserService;
     }
 
@@ -23,11 +23,6 @@ public class StopCommand implements Command {
         if (telegramUserService.findUserByChatId(chatId).isPresent()) {
             telegramUserService.deleteUserByChatId(chatId);
         }
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), STOP_MESSAGE);
-    }
-
-    @Override
-    public void executeCallback(Update update) {
-
+        sendBotService.sendMessage(update.getMessage().getChatId(), STOP_MESSAGE);
     }
 }

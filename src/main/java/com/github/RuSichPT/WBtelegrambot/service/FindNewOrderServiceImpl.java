@@ -8,13 +8,17 @@ import kong.unirest.HttpResponse;
 import kong.unirest.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FindNewOrderServiceImpl implements FindNewOrderService {
 
-    private final SendBotMessageService sendBotMessageService;
+    public static final String HOST = "https://basket-10.wb.ru";
+
+    private final SendBotService sendBotService;
     private final WbClientPrices wbClientPrices;
     private final TelegramUserService telegramUserService;
 
@@ -23,8 +27,8 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
             + "Артикул: %s\n"
             + "Цена: %s\n\n";
 
-    public FindNewOrderServiceImpl(SendBotMessageService sendBotMessageService, WbClientPrices wbClientPrices, TelegramUserService telegramUserService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public FindNewOrderServiceImpl(SendBotService sendBotService, WbClientPrices wbClientPrices, TelegramUserService telegramUserService) {
+        this.sendBotService = sendBotService;
         this.wbClientPrices = wbClientPrices;
         this.telegramUserService = telegramUserService;
     }
@@ -36,12 +40,11 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
 
         for (TelegramUser tu :
                 telegramUsers) {
-
             HttpResponse<Orders> httpResponse = wbClientPrices.getNewOrders(tu.getWbToken());
 
             if (httpResponse.getStatus() == HttpStatus.OK) {
-
-                int numNewOrders = httpResponse.getBody().getOrders().size();
+                List<Order> orders = httpResponse.getBody().getOrders();
+                int numNewOrders = orders.size();
 
                 if (tu.getNumNewOrders() != numNewOrders) {
 
@@ -49,14 +52,40 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
                     telegramUserService.saveUser(tu);
 
                     if (numNewOrders != 0) {
-                        List<Order> orders = httpResponse.getBody().getOrders();
-                        String message = orders.stream()
-                                .map(o -> (String.format(MESSAGE, o.getNmId(), o.getArticle(), o.getPrice()/100L)))
-                                .collect(Collectors.joining());
-                        sendBotMessageService.sendMessage(tu.getChatId(), message);
+                        notify(tu, orders);
                     }
                 }
             }
         }
     }
+
+    private URL getUrlPhoto(int nmId) throws MalformedURLException {
+        String id = Integer.toString(nmId);
+        StringBuilder vol = new StringBuilder("/vol");
+        StringBuilder part = new StringBuilder("/part");
+        for (int i = 0; i < 6; i++) {
+            if (i < 4)
+                vol.append(id.charAt(i));
+            part.append(id.charAt(i));
+        }
+        String urlStr = HOST + vol + part + "/" + nmId + "/images/big/1.jpg";
+
+        return new URL(urlStr);
+    }
+
+    private void notify(TelegramUser user, List<Order> orders) {
+        Long chatId = user.getChatId();
+        String message;
+        for (Order o :
+                orders) {
+            message = String.format(MESSAGE, o.getNmId(), o.getArticle(), o.getPrice() / 100L);
+            try {
+                URL url = getUrlPhoto(o.getNmId());
+                sendBotService.sendPhoto(chatId, url, message);
+            } catch (IOException e) {
+                sendBotService.sendMessage(chatId, message);
+            }
+        }
+    }
+
 }

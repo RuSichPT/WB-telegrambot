@@ -1,7 +1,7 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageServiceImpl;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotServiceImpl;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPricesImpl;
@@ -11,10 +11,10 @@ import org.mockito.Mockito;
 
 public class CommandContainerTest {
 
-    protected final SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageServiceImpl.class);
+    protected final SendBotService sendBotService = Mockito.mock(SendBotServiceImpl.class);
     protected final WbClientPrices wbClientPrices = Mockito.mock(WbClientPricesImpl.class);
     protected final TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
-    private final CommandContainer commandContainer = new CommandContainer(sendBotMessageService, wbClientPrices, telegramUserService);
+    private final CommandContainer commandContainer = new CommandContainer(sendBotService, wbClientPrices, telegramUserService);
 
     @Test
     public void shouldBeTheSameNumberCommand() {

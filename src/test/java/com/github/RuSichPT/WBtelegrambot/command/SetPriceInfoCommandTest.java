@@ -17,7 +17,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.SetPriceCommand.*;
 
 public class SetPriceInfoCommandTest extends AbstractWbClientCommandTest {
 
-    private final SetPriceCommand setPriceCommand = new SetPriceCommand(sendBotMessageService, telegramUserService, wbClientPrices);
+    private final SetPriceCommand setPriceCommand = new SetPriceCommand(sendBotService, telegramUserService, wbClientPrices);
     private PriceInfoGet priceInfoGet;
     private PriceInfoSet priceInfoSet;
 

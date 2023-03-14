@@ -3,7 +3,7 @@ package com.github.RuSichPT.WBtelegrambot.bot;
 import com.github.RuSichPT.WBtelegrambot.command.Command;
 import com.github.RuSichPT.WBtelegrambot.command.CommandContainer;
 import com.github.RuSichPT.WBtelegrambot.command.CommandName;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageServiceImpl;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotServiceImpl;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.RuSichPT.WBtelegrambot.command.CommandName.NO;
+import static com.github.RuSichPT.WBtelegrambot.command.CommandName.TEST;
 
 @Component
 public class WbTelegramBot extends TelegramLongPollingBot {
@@ -33,7 +34,7 @@ public class WbTelegramBot extends TelegramLongPollingBot {
     @Autowired
     public WbTelegramBot(BotConfig config, WbClientPrices wbClientPrices, TelegramUserService telegramUserService) {
         this.config = config;
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), wbClientPrices, telegramUserService);
+        this.commandContainer = new CommandContainer(new SendBotServiceImpl(this), wbClientPrices, telegramUserService);
         createMenu();
     }
 
@@ -71,7 +72,7 @@ public class WbTelegramBot extends TelegramLongPollingBot {
         List<BotCommand> botCommands = new ArrayList<>(commandNames.length);
 
         for (CommandName commandName : commandNames) {
-            if (commandName != NO) {
+            if (commandName != NO && commandName != TEST) {
                 botCommands.add(new BotCommand(commandName.getCommandName(), commandName.getDescription()));
             }
         }
@@ -83,7 +84,7 @@ public class WbTelegramBot extends TelegramLongPollingBot {
         try {
             this.execute(new SetMyCommands(getBotCommands(), new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
-            //todo add logging to the project.
+            // todo add logging to the project.
             e.printStackTrace();
         }
     }

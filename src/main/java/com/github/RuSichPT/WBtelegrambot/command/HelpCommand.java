@@ -1,6 +1,6 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.github.RuSichPT.WBtelegrambot.command.CommandName.*;
@@ -10,7 +10,7 @@ import static com.github.RuSichPT.WBtelegrambot.command.CommandName.*;
  */
 public class HelpCommand implements Command {
 
-    private final SendBotMessageService sendBotMessageService;
+    private final SendBotService sendBotService;
 
     public final static String HELP_MESSAGE = String.format("✨<b>Доcтупные команды</b>✨\n\n"
 
@@ -34,17 +34,12 @@ public class HelpCommand implements Command {
             GET_ALL_ORDERS.getCommandName(), GET_NEW_ORDERS.getCommandName(),
             HELP.getCommandName());
 
-    public HelpCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public HelpCommand(SendBotService sendBotService) {
+        this.sendBotService = sendBotService;
     }
 
     @Override
     public void execute(Update update) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), HELP_MESSAGE);
-    }
-
-    @Override
-    public void executeCallback(Update update) {
-
+        sendBotService.sendMessage(update.getMessage().getChatId(), HELP_MESSAGE);
     }
 }

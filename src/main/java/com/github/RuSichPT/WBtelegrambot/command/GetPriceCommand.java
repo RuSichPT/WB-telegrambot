@@ -1,7 +1,7 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
 import com.github.RuSichPT.WBtelegrambot.repository.entity.TelegramUser;
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import com.github.RuSichPT.WBtelegrambot.wbclient.WbClientPrices;
 import com.github.RuSichPT.WBtelegrambot.wbclient.dto.PriceInfoGet;
@@ -30,8 +30,8 @@ public class GetPriceCommand extends AbstractWbCommand {
     public static final String CALLBACK_MESSAGE3 = "2";
 
 
-    public GetPriceCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
-        super(sendBotMessageService, telegramUserService);
+    public GetPriceCommand(SendBotService sendBotService, TelegramUserService telegramUserService, WbClientPrices wbClientPrices) {
+        super(sendBotService, telegramUserService);
         this.wbClientPrices = wbClientPrices;
     }
 
@@ -40,7 +40,7 @@ public class GetPriceCommand extends AbstractWbCommand {
         String command = update.getMessage().getText();
 
         if (command.equalsIgnoreCase(CommandName.GET_PRICE.getCommandName())) {
-            sendBotMessageService.sendMessage(update.getMessage().getChatId(), MESSAGE1, createButtons());
+            sendBotService.sendMessage(update.getMessage().getChatId(), MESSAGE1, createButtons());
         }
     }
 
@@ -58,7 +58,7 @@ public class GetPriceCommand extends AbstractWbCommand {
                         pI.getDiscount(), pI.getPromoCode(), pI.getPrice() * (100 - pI.getDiscount()) / 100L, pI.getNmId())))
                 .collect(Collectors.joining());
 
-        sendBotMessageService.sendMessage(chatId, message);
+        sendBotService.sendMessage(chatId, message);
     }
 
     private List<List<InlineKeyboardButton>> createButtons() {

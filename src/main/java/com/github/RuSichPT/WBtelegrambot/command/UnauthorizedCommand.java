@@ -1,12 +1,12 @@
 package com.github.RuSichPT.WBtelegrambot.command;
 
-import com.github.RuSichPT.WBtelegrambot.service.SendBotMessageService;
+import com.github.RuSichPT.WBtelegrambot.service.SendBotService;
 import com.github.RuSichPT.WBtelegrambot.service.TelegramUserService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnauthorizedCommand extends AbstractWbCommand {
-    public UnauthorizedCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
-        super(sendBotMessageService, telegramUserService);
+    public UnauthorizedCommand(SendBotService sendBotService, TelegramUserService telegramUserService) {
+        super(sendBotService, telegramUserService);
     }
 
     public final static String MESSAGE = "<b>Ты не авторизован!</b>\n\n"
@@ -15,6 +15,6 @@ public class UnauthorizedCommand extends AbstractWbCommand {
 
     @Override
     public void executeWbCommand(Update update) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), MESSAGE);
+        sendBotService.sendMessage(update.getMessage().getChatId(), MESSAGE);
     }
 }
