@@ -19,12 +19,6 @@
 * - deleted wb token from application.properties. Now there is only wb token for tests wb client.
 * - significantly changes of tests.
 
-## 0.4.2-SNAPSHOT
-* - fix bug in job 2; NumNewOrders were not resetting
-
-## 0.4.1-SNAPSHOT
-* - fix bug in job
-
 ## 0.4.0-SNAPSHOT
 * - implemented notification about new orders.
 * - implemented /getneworders command.
