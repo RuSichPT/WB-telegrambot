@@ -22,10 +22,7 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
     private final WbClientPrices wbClientPrices;
     private final TelegramUserService telegramUserService;
 
-    public static final String MESSAGE = "Новый заказ!\n"
-            + "Номенклатура товара: %s\n"
-            + "Артикул: %s\n"
-            + "Цена: %s\n\n";
+    public static final String MESSAGE = "Новый заказ!\n";
 
     public FindNewOrderServiceImpl(SendBotService sendBotService, WbClientPrices wbClientPrices, TelegramUserService telegramUserService) {
         this.sendBotService = sendBotService;
@@ -78,7 +75,7 @@ public class FindNewOrderServiceImpl implements FindNewOrderService {
         String message;
         for (Order o :
                 orders) {
-            message = String.format(MESSAGE, o.getNmId(), o.getArticle(), o.getPrice() / 100L);
+            message = MESSAGE + o.toStringShort() + "\n";
             try {
                 URL url = getUrlPhoto(o.getNmId());
                 sendBotService.sendPhoto(chatId, url, message);

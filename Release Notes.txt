@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.8.0-SNAPSHOT
+* - added photo to notify about new orders
+* - updated notify message and /getpriceinfo message
+* - fixed some bugs
+
 ## 0.7.0-SNAPSHOT
 * - added menu
 * - added buttons for command /getpriceinfo

@@ -13,9 +13,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -70,6 +67,9 @@ public class SendBotServiceImpl implements SendBotService {
             wbTelegramBot.execute(sendPhoto);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+        finally {
+            stream.close();
         }
     }
 

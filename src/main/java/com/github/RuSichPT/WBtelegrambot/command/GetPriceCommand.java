@@ -25,6 +25,8 @@ public class GetPriceCommand extends AbstractWbCommand {
             + "Цена со скидкой: %s\n"
             + "https://www.wildberries.ru/catalog/%s/detail.aspx\n\n";
 
+    public static final String MESSAGE3 = "Нет таких товаров!\n\n";
+
     public static final String CALLBACK_MESSAGE1 = "0";
     public static final String CALLBACK_MESSAGE2 = "1";
     public static final String CALLBACK_MESSAGE3 = "2";
@@ -53,10 +55,15 @@ public class GetPriceCommand extends AbstractWbCommand {
         TelegramUser user = telegramUserService.findUserByChatId(chatId).get();
         List<PriceInfoGet> priceInfoList = wbClientPrices.getPriceInfo(quantity, user.getWbToken()).getBody();
 
-        String message = priceInfoList.stream()
-                .map(pI -> (String.format(MESSAGE2, pI.getNmId(), pI.getPrice(),
-                        pI.getDiscount(), pI.getPromoCode(), pI.getPrice() * (100 - pI.getDiscount()) / 100L, pI.getNmId())))
-                .collect(Collectors.joining());
+        String message;
+        if (priceInfoList == null) {
+            message = MESSAGE3;
+        } else {
+            message = priceInfoList.stream()
+                    .map(pI -> (String.format(MESSAGE2, pI.getNmId(), pI.getPrice(),
+                            pI.getDiscount(), pI.getPromoCode(), pI.getPrice() * (100 - pI.getDiscount()) / 100L, pI.getNmId())))
+                    .collect(Collectors.joining());
+        }
 
         sendBotService.sendMessage(chatId, message);
     }

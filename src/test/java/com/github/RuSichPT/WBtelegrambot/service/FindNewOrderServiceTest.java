@@ -45,7 +45,7 @@ public class FindNewOrderServiceTest {
         //given
         Mockito.when(telegramUserService.findAll()).thenReturn(createListTelegramUser(0));
         Order order = orderList.get(0);
-        String message = String.format(MESSAGE, order.getNmId(), order.getArticle(), order.getPrice() / 100L);
+        String message = MESSAGE + order.toStringShort() + "\n";
 
         //when
         findNewOrderService.findNewOrders();
@@ -91,6 +91,8 @@ public class FindNewOrderServiceTest {
         order.setNmId(12345678);
         order.setArticle("article");
         order.setPrice(356800);
+        order.setCurrencyCode(643);
+
         orders.add(order);
         return orders;
     }
