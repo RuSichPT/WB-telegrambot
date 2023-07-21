@@ -14,4 +14,14 @@ For encryption in dataBase (any int value)
 
 For tests WB client
  - wb.standart.test.token = ${WB_STD_TEST_TOKEN}
- 
+
+## Technological stack
+- Spring Boot
+- Spring Scheduler
+- MySQL 
+- Flyway 
+- Telegram-bot SpringBoot starter
+- Spring Data
+- Unirest 
+- JUnit 5, Mockito
+- Docker
