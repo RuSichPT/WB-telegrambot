@@ -17,8 +17,7 @@ import java.util.List;
 public class WbClientPricesTest {
 
     private final WbClientPrices wbClientPrices;
-    private final String ERROR_MESSAGE = "[\"данных номенклатур не было в выгруженном с портала шаблоне: [1234567],"
-            + " добавление строк в шаблон запрещено\"]";
+    private final String ERROR_MESSAGE = "[\"No valid goods in task\"]";
 
     private final String wbToken;
 
