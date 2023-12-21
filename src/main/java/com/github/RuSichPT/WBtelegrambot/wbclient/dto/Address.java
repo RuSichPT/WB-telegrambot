@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class Address {
-    String province;
-    String area;
-    String city;
-    String street;
-    String home;
-    String flat;
-    String entrance;
-    Double longitude;
-    Double latitude;
+    private String province;
+    private String area;
+    private String city;
+    private String street;
+    private String home;
+    private String flat;
+    private String entrance;
+    private Double longitude;
+    private Double latitude;
 }

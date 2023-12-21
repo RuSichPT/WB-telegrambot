@@ -1,7 +1,6 @@
 package com.github.RuSichPT.WBtelegrambot.repository.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.Column;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "tg_user")
-@EqualsAndHashCode
 public class TelegramUser {
 
     @Id

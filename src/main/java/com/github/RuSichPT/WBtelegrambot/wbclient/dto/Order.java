@@ -7,26 +7,26 @@ import java.util.Set;
 
 @Data
 public class Order {
-    Integer id;
-    String rid;
-    String createdAt;
-    Integer warehouseId;
-    String supplyId;
-    String[] prioritySc;
-    String[] offices;
-    Address address;
-    User user;
-    String[] skus;
-    Integer price;
-    Integer convertedPrice;
-    Integer currencyCode;
-    Integer convertedCurrencyCode;
-    String orderUid;
-    String deliveryType;
-    Integer nmId;
-    Integer chrtId;
-    String article;
-    Boolean isLargeCargo;
+    private Integer id;
+    private String rid;
+    private String createdAt;
+    private Integer warehouseId;
+    private String supplyId;
+    private String[] prioritySc;
+    private String[] offices;
+    private Address address;
+    private User user;
+    private String[] skus;
+    private Integer price;
+    private Integer convertedPrice;
+    private Integer currencyCode;
+    private Integer convertedCurrencyCode;
+    private String orderUid;
+    private String deliveryType;
+    private Integer nmId;
+    private Integer chrtId;
+    private String article;
+    private Boolean isLargeCargo;
 
     private Currency getCurrency() {
         Set<Currency> currencies = Currency.getAvailableCurrencies();

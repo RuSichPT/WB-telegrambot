@@ -13,13 +13,13 @@ import static java.util.Objects.nonNull;
 @Getter
 @EqualsAndHashCode
 public class OrderRequestArgs {
-    Integer limit;
-    Long next;
-    Integer dateFrom;
-    Integer dateTo;
+    private Integer limit;
+    private Long next;
+    private Integer dateFrom;
+    private Integer dateTo;
 
-    public Map populateQueries() {
-        Map queries = new HashMap<>();
+    public Map<String,Object> populateQueries() {
+        Map<String,Object> queries = new HashMap<>();
         if (nonNull(limit)) {
             queries.put("limit", limit);
         }

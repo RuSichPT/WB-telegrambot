@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class User {
-    String fio;
-    String phone;
+    private String fio;
+    private String phone;
 }

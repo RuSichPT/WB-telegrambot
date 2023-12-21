@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 @EqualsAndHashCode
 public class Orders {
-    Integer next;
-    List<Order> orders;
+    private Integer next;
+    private List<Order> orders;
 }
